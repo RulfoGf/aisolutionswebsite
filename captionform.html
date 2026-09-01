@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+	<meta name="description" content="Advanced Contact Form with File Uploader">
+	<meta name="author" content="UWS">
+	<title>Sendy | Advanced Contact Form</title>
+
+	<!-- Favicon -->
+	<link href="img/favicon.png" rel="shortcut icon">
+
+	<!-- Google Fonts - Poppins -->
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+	<!-- Font Awesome CSS -->
+	<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+
+	<!-- Custom Font Icons -->
+	<link href="vendor/icomoon/css/iconfont.min.css" rel="stylesheet">
+
+	<!-- Vendor CSS -->
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="vendor/dmenu/css/menu.css" rel="stylesheet">
+	<link href="vendor/hamburgers/css/hamburgers.min.css" rel="stylesheet">
+	<link href="vendor/mmenu/css/mmenu.min.css" rel="stylesheet">
+	<link href="vendor/filepond/css/filepond.css" rel="stylesheet">	
+
+	<!-- Main CSS -->
+	<link href="css/form/style.css" id="cpswitch" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<!-- Preloader -->
+	<div id="preloader">
+		<div data-loader="circle-side"></div>
+	</div>
+	<!-- Preloader End -->
+
+	<!-- Page -->
+	<div id="page">
+		<!-- Header -->
+		<header class="main-header sticky">
+			<a href="#menu" class="btn-mobile">
+				<div class="hamburger hamburger--spin" id="hamburger">
+					<div class="hamburger-box">
+						<div class="hamburger-inner"></div>
+					</div>
+				</div>
+			</a>
+			<div class="container">
+				<div class="row">
+					
+					<div class="col-lg-9 col-6">
+						<!-- Menu -->
+						<nav id="menu" class="main-menu">
+							<ul>
+								
+								
+							</ul>
+						</nav>
+						<!-- Menu End -->
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- Header End -->
+
+		<!-- Sub Header -->
+		
+		<!-- Main -->
+		<main>
+			<!-- Contact  -->
+			
+			<!-- Contact End -->
+		</main>
+		<!-- Main End -->
+
+		<!-- Footer -->
+		
+	</div>
+	<!-- Page End -->
+	<script>
+    function sendHeight() {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({
+            type: 'resize-iframe',
+            height: height
+        }, '*'); // En producción, cambia '*' por tu dominio principal por seguridad
+    }
+
+    // Enviamos la altura al cargar y si la ventana cambia de tamaño
+    window.addEventListener('load', sendHeight);
+    window.addEventListener('resize', sendHeight);
+
+    // Opcional: Si la landing tiene elementos que aparecen después (acordeones, etc)
+    const observer = new ResizeObserver(sendHeight);
+    observer.observe(document.body);
+</script>
+	<!-- Back to top button -->
+	<div id="toTop"><i class="fa fa-chevron-up"></i></div>	
+
+	<!-- Vendor Javascript Files -->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="vendor/easing/js/easing.min.js"></script>
+	<script src="vendor/parsley/js/parsley.min.js"></script>
+	<script src="vendor/nice-select/js/jquery.nice-select.min.js"></script>
+	<script src="vendor/theia-sticky-sidebar/js/ResizeSensor.min.js"></script>
+	<script src="vendor/theia-sticky-sidebar/js/theia-sticky-sidebar.min.js"></script>
+	<script src="vendor/mmenu/js/mmenu.min.js"></script>
+	<script src="vendor/filepond/js/filepond-plugin-file-validate-size.js"></script>
+	<script src="vendor/filepond/js/filepond-plugin-file-validate-type.js"></script>
+	<script src="vendor/filepond/js/filepond.min.js"></script>
+
+	<!-- Google reCaptcha -->
+	
+
+	<!-- Main Javascript File -->
+	<script src="js/form/scripts.js"></script>
+
+</body>
+
+</html>

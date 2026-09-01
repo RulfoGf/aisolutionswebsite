@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Advanced Contact Form with File Uploader">
+    <meta name="author" content="UWS">
+    <title>Sendy | Advanced Contact Form</title>
+    <link href="../img/favicon.png" rel="shortcut icon">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+
+<body onLoad="setTimeout('delayedRedirect()', 5000)">
+
+<?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php'; 
+require 'phpmailer/src/SMTP.php'; // Es vital incluir el archivo SMTP.php
+
+$mail = new PHPMailer(true);
+$errors = ''; // Corregido: Inicialización de la variable de errores
+
+/* Validate User Inputs */
+if ($_POST['username'] != '') {
+    $_POST['username'] = filter_var($_POST['username'], FILTER_SANITIZE_SPECIAL_CHARS);
+    if ($_POST['username'] == '') { $errors .= 'Please enter a valid name.<br/>'; }
+} else { 
+    $errors .= 'Please enter your name.<br/>';
+}
+
+if ($_POST['email'] != '') {
+    $_POST['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $_POST['email'] = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    if($_POST['email'] == '') { $errors .= 'Please enter a valid email address.<br/>'; }
+} else {
+    $errors .= 'Please enter your email address.<br/>';
+}
+
+function sanitizePostTitle($postName, $invalidMessage) {
+    if (isset($_POST[$postName]) && $_POST[$postName] != '') {
+        $_POST[$postName] = filter_var($_POST[$postName], FILTER_SANITIZE_SPECIAL_CHARS);
+        if ($_POST[$postName] == '') { return $invalidMessage . '<br/>'; }
+    }
+    return '';
+}
+$errors .= sanitizePostTitle('subject', 'Please set a valid Subject.');
+
+// Continue if NO errors found
+if (!$errors) { 
+
+    $customer_name = $_POST['username'];
+    $customer_mail = $_POST['email'];
+    $customer_phone = $_POST['phone'];  
+    $customer_subject = $_POST['subject'];
+    $customer_message = $_POST['message'];
+
+    try {
+        // --- CONFIGURACIÓN SMTP PARA GMAIL EN IPAGE ---
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'contact@ai-solutions4you.com'; 
+        $mail->Password   = 'TU_CLAVE_DE_16_LETRAS_AQUI'; // <--- PEGA TU CONTRASEÑA DE APLICACIÓN AQUÍ
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        // Compatibilidad para servidores iPage
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+
+        // --- DESTINATARIOS ---
+        $mail->setFrom('contact@ai-solutions4you.com', 'AI Solutions'); 
+        $mail->addAddress('contact@ai-solutions4you.com', 'Admin'); 
+        $mail->addReplyTo($customer_mail, $customer_name); 
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Nuevo mensaje: ' . $customer_subject;
+
+        // --- MANEJO DE ARCHIVOS FILEPOND ---
+        $uploaded_file_links = "";
+        if (isset($_POST['filepond']) && is_array($_POST['filepond'])) {
+            foreach($_POST['filepond'] as $attachment_id) {
+                $dir = 'tmp/' . $attachment_id;
+                $files = glob($dir . '/*.*');
+                if ($files) {
+                    $file_path = $files[0];
+                    $uploaded_file_links .= '<br/><a href="http://' . $_SERVER['HTTP_HOST'] . '/' . $file_path . '">Descargar archivo adjunto</a>';
+                    // Opcional: Adjuntar el archivo directamente al correo
+                    // $mail->addAttachment($file_path); 
+                }
+            }
+        }
+
+        if ($uploaded_file_links == "") { $uploaded_file_links = 'No files uploaded'; }
+
+        // Cargar plantilla HTML
+        $email_html = file_get_contents('phpmailer/email-file-download.html');
+        $body = str_replace(
+            array('customerName', 'customerEmail', 'customerPhone', 'customerSubject', 'uploadedFile', 'customerMessage'), 
+            array($customer_name, $customer_mail, $customer_phone, $customer_subject, $uploaded_file_links, $customer_message), 
+            $email_html
+        );
+
+        $mail->msgHTML($body);      
+        $mail->send();
+
+        // Éxito
+        echo '<div id="success"><h4>Thank you for contacting us.</h4><small>Check your mailbox.</small></div>';
+        echo '<script>setTimeout(function(){ window.location.href = "../index.html"; }, 5000);</script>';
+
+    } catch (Exception $e) {
+        echo '<div style="color: #e9431c">Message could not be sent. Mailer Error: ' . $mail->ErrorInfo . '</div>';
+    } 
+
+} else {
+    echo '<div style="color: #e9431c; padding: 20px;">' . $errors . '</div>';
+    echo '<a href="../index.html">Go Back</a>';
+}
+?>
+
+</body>
+</html>

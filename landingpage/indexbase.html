@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="AI-Solutions4U Landing page ">
+	<meta name="author" content="UWS">
+	<title>Solutions4U </title>
+
+	<!-- Favicon -->
+	<link href="img/iconpng.png" rel="shortcut icon">
+
+	<!-- Google Fonts - Poppins -->
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+	<!-- Font Awesome CSS -->
+	<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+
+	<!-- Custom Font Icons -->
+	<link href="vendor/icomoon/css/iconfont.min.css" rel="stylesheet">
+
+	<!-- Vendor CSS -->
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="vendor/dmenu/css/menu.css" rel="stylesheet">
+	<link href="vendor/hamburgers/css/hamburgers.min.css" rel="stylesheet">
+	<link href="vendor/mmenu/css/mmenu.min.css" rel="stylesheet">
+	<link href="vendor/filepond/css/filepond.css" rel="stylesheet">	
+
+	<!-- Main CSS 
+	<link href="css/landingpage/landingstyle.css" id="cpswitch" rel="stylesheet">-->
+	<link href="css/style.css" id="cpswitch" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<div class="clase-landing-exclusiva">	
+	<!-- Preloader -->
+		<div id="preloader">
+			<div data-loader="circle-side"></div>
+		</div>
+		<!-- Preloader End -->
+
+		<!-- Page -->
+		<div id="page">
+			<!-- Header -->
+			<header class="main-header sticky">
+				
+				<div class="container">
+					<div class="row">
+						
+						<div class="col-lg-9 col-6">
+							<!-- Menu -->
+							<nav id="menu" class="main-menu">
+								<ul>
+									
+									
+								</ul>
+							</nav>
+							<!-- Menu End -->
+						</div>
+					</div>
+				</div>
+			</header>
+			<!-- Header End -->
+
+			<!-- Sub Header -->
+			<!-- coment
+			<div class="sub-header">
+				<div class="container">
+					<h1>HTML email - download link</h1>
+				</div>
+			</div>-->
+			<!-- Sub Header End -->
+
+			<!-- Main -->
+			<main>
+
+				<!-- Contact  -->
+				<div class="contact">
+					<div class="container">
+						<!-- Form -->
+						<form method="POST" id="contactForm" name="contactForm" action="php/send_phpmailer_file_download_email_template.php">
+							<div class="row">
+								<div class="col-lg-8" id="mainContent">
+									<!-- Personal Details -->
+									<h3><br></h3>
+									<div class="row box first">
+										<div class="box-header">
+											
+											<h3><strong>1</strong>Tus datos personales son utilizados por un especialista, te contactaré a la brevedad</h3>
+
+											<p>Indícanos por que medio prefieres que te contactemos</p>
+										</div>
+										<div class="col-lg-6 col-md-12">
+											<div class="form-group">
+												<input id="username" class="form-control" name="username" placeholder="Nombre completo" type="text" data-parsley-pattern="^[a-zA-Z\s.]+$" required />
+											</div>
+										</div>
+										<div class="col-lg-6 col-md-12">
+											<div class="form-group">
+												<input id="email" class="form-control" name="email" placeholder="Correo corporativo" type="email" required />
+											</div>
+										</div>
+										<div class="col-lg-6 col-md-12">
+											<div class="form-group">
+												<input id="phone" class="form-control" name="phone" placeholder="Incluye ´+´ y  lada, Ejem. +52 55 8581 6120" type="text"  data-parsley-pattern="^\+{1}[0-9]+$" /> 
+												
+												
+												<!-- Personal Details End 
+												<input id="phone" class="form-control" name="phone" placeholder="Tel. incluyendo ´+´ y  lada ejem.: +525585816120" type="text" data-parsley-pattern="^\+{1}[0-9]+$" /> -->
+											</div>
+										</div>
+										<div class="col-lg-6 col-md-15">
+											<div class="form-group">
+												<input type="hidden" id="subject" name="subject" value="Mensaje Whatsapp" />
+												<select id="subjectList" class="wide" name="subjectList">
+													<option value="0">Mensaje Whatsapp</option>
+													<option value="1">Llamada telefónica</option>
+													<option value="2">Correo</option>
+													
+												</select>
+											</div>
+										</div>
+									</div>
+									<!-- Personal Details End -->
+									<!-- Message -->
+									<div class="row box">
+										<div class="box-header">
+											<h3><strong>2</strong>Dano información de tu empresa o al reto que tienes?.</h3>
+											<p>Esto nos ayudará a entender mejor tu negocio.</p>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group">
+												<textarea id="inputMessage" class="form-control" name="message" placeholder="Ideal nos dejes tu sitio, perfiles de redes o nombre de la empresa. " data-parsley-pattern="^[a-zA-Z0-9\s.:,!?']+$"
+													required></textarea>
+											</div>
+										</div>
+									</div>
+									<!-- Message End -->
+									<!-- File Uploader -->
+									<!-- comentar
+									<div class="row box">
+										<div class="box-header">
+											<h3><strong>3</strong>Attachment</h3>
+											<p>Only jpg, png, pdf, max. 1Mb.</p>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group">
+												<input type="file" name="filepond[]" />
+											</div>
+										</div>
+									</div> -->
+									<!-- File Uploader End -->
+									<!-- Terms -->
+									<div class="row box">
+										<div class="box-header">
+											<h3><strong>3</strong>Utilizaremos tus datos con responsabilidad</h3>
+											<p>Por favor hacer click, autorizando comunicarnos contigo.</p>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group">
+												<input type="checkbox" id="cbx" class="inp-cbx" name="terms" value="yes" required />
+												
+												<label class="cbx terms" for="cbx">
+													<span>
+														<svg width="12px" height="10px" viewbox="0 0 12 10">
+															<polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+														</svg>
+													</span>
+													<span>Aceptar<a href="https://www.ai-solutions4you.info/politicadeprivacidad.html" class="terms-link" target="_blank">Aviso de privacidad</a>.</span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<!-- Terms End -->
+									<!-- Submit-->
+									<div class="row box">
+										<div class="col-12">
+											<div class="form-group">
+												<button type="submit" name="submit" class="btn-form-func">
+													<span class="btn-form-func-content">Enviar</span>
+													<span class="icon"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+												</button>
+											</div>
+										</div>
+									</div>
+									<!-- Submit -->
+								</div>
+								<div class="col-lg-4" id="sidebar">
+									<!-- Contact Info Container -->
+									<div id="contactInfoContainer" class="theiaStickySidebar">
+										
+										<div class="contact-box">
+											<i class="icon icon-envelope"></i>
+											<h2>Email</h2>
+											<a href="mailto:contact@ai-solutions4you.com">contact@ai-solutions4you.com</a>
+										</div>
+										<div class="contact-box">
+											<i class="icon icon-support"></i>
+											<h2>Whatsapp</h2>
+											
+											<a href="https://wa.me/5215652625387">+55 56 5262 5387</a>
+										</div>
+										<div class="contact-box">
+											<i class="icon icon-phone-call2"></i>
+											<h2>Teléfono</h2>
+											
+											<a href="tel:+525593377333">+55 9337 7333</a>
+										</div>
+									</div>
+									<!-- Contact Info Container End -->
+								</div>
+							</div>
+						</form>
+						<!-- Form End -->
+					</div>
+				</div>
+				<!-- Contact End -->
+			</main>
+
+	</div>		
+
+			<!-- Main End -->
+			<!-- Footer -->
+			<footer class="main-footer">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							<ul id="subFooterLinks">
+								<li><a href="https://www.instagram.com/ai_solutions4u" target="_blank">Danos <i class="fa fa-heart pulse"></i> en Instagram</a></li>
+								<!-- comentar
+								<li><a href="https://codecanyon.net/user/ultimatewebsolutions#contact" target="_blank">Need Help?</a></li>
+								<li><a href="https://codecanyon.net/cart/configure_before_adding/23794224" target="_blank">Purchase Sendy</a></li>-->
+							</ul>
+						</div>
+						<div class="col-md-4">
+							<div id="copy">© 2026 AI-Solutions4U</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+
+
+			
+			<!-- Footer End -->
+		</div>
+
+	<!-- Page End -->
+	 <script>
+		  const phoneInput = document.getElementById('phone');
+
+  			phoneInput.addEventListener('focus', function() {
+    		if (!this.value.startsWith('+52')) {
+      		this.value = '+52';
+  		  }
+  		});
+	</script>
+	<script>
+    function sendHeight() {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({
+            type: 'resize-iframe',
+            height: height
+        }, '*'); // En producción, cambia '*' por tu dominio principal por seguridad
+    }
+
+    // Enviamos la altura al cargar y si la ventana cambia de tamaño
+    window.addEventListener('load', sendHeight);
+    window.addEventListener('resize', sendHeight);
+
+    // Opcional: Si la landing tiene elementos que aparecen después (acordeones, etc)
+    const observer = new ResizeObserver(sendHeight);
+    observer.observe(document.body);
+	</script>
+
+	<!-- Back to top button -->
+	<div id="toTop"><i class="fa fa-chevron-up"></i></div>	
+
+	<!-- Vendor Javascript Files -->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+	<script src="vendor/easing/js/easing.min.js"></script>
+	<script src="vendor/parsley/js/parsley.min.js"></script>
+	<script src="vendor/nice-select/js/jquery.nice-select.min.js"></script>
+	<script src="vendor/theia-sticky-sidebar/js/ResizeSensor.min.js"></script>
+	<script src="vendor/theia-sticky-sidebar/js/theia-sticky-sidebar.min.js"></script>
+	<script src="vendor/mmenu/js/mmenu.min.js"></script>
+	<script src="vendor/filepond/js/filepond-plugin-file-validate-size.js"></script>
+	<script src="vendor/filepond/js/filepond-plugin-file-validate-type.js"></script>
+	<script src="vendor/filepond/js/filepond.min.js"></script>
+
+	<!-- Google reCaptcha -->
+	<script src="https://www.google.com/recaptcha/api.js?render=YOUR_KEY"></script>
+
+	<!-- Main Javascript File -->
+	<script src="js/scripts.js"></script>
+
+</body>
+
+
+</html>

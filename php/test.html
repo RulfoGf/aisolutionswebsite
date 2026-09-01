@@ -1,0 +1,16 @@
+<!-- Campo donde el usuario escribe -->
+<input type="text" id="miInput" placeholder="Escribe algo aquí...">
+
+<!-- Lugar donde aparecerá el texto -->
+<p>Lo que escribes: <span id="resultado"></span></p>
+
+<script>
+  const input = document.getElementById('miInput');
+  const resultado = document.getElementById('resultado');
+
+  // Escuchar cada pulsación de tecla o cambio
+  input.addEventListener('input', function() {
+    // Actualizar el contenido del span con el valor del input
+    resultado.textContent = input.value;
+  });
+</script>
