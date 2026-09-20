@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tienda — AI Solutions4You</title>
+<link rel="stylesheet" href="/tienda/assets/tienda.css">
+</head>
+<body>
+<div class="tienda-wrap">
+  <header class="tienda-header">
+    <a class="logo" href="/">← AI Solutions4You</a>
+    <button class="btn-carrito" onclick="abrirCarrito()">
+      🛒 Carrito
+      <span class="contador" data-contador-carrito style="display:none">0</span>
+    </button>
+  </header>
+
+  <main class="tienda-grid" data-grid-productos>
+    <!-- Las tarjetas de producto se insertan aquí vía JS -->
+  </main>
+</div>
+
+<!-- Panel lateral del carrito -->
+<div class="carrito-overlay" onclick="cerrarCarrito()"></div>
+<aside class="carrito-panel">
+  <div class="encabezado">
+    <strong>Tu carrito</strong>
+    <button class="btn-secundario" onclick="cerrarCarrito()">Cerrar</button>
+  </div>
+  <div class="carrito-items" data-items-carrito></div>
+  <div class="carrito-footer">
+    <div class="subtotal">
+      <span>Subtotal</span>
+      <span data-subtotal-carrito>$0.00</span>
+    </div>
+    <button class="btn-primario" style="width:100%" data-ir-checkout onclick="location.href='/tienda/checkout.html'">
+      Proceder al pago
+    </button>
+  </div>
+</aside>
+
+<script src="/tienda/assets/carrito.js"></script>
+<script>
+  async function cargarProductos() {
+    const res = await fetch("/data/productos.json");
+    const productos = await res.json();
+    const grid = document.querySelector("[data-grid-productos]");
+
+    grid.innerHTML = productos
+      .map(
+        (p) => `
+      <div class="tarjeta-producto">
+        <img src="${p.imagen}" alt="${p.nombre}" onerror="this.style.background='#1d232d'">
+        <div class="info">
+          <h3>${p.nombre}</h3>
+          <p>${p.descripcion}</p>
+          <div class="precio">${p.precio.toLocaleString("es-MX", { style: "currency", currency: p.moneda || "MXN" })}</div>
+          <button class="btn-primario" onclick='agregarAlCarrito(${JSON.stringify(p)})'>Agregar al carrito</button>
+        </div>
+      </div>`
+      )
+      .join("");
+  }
+
+  cargarProductos();
+</script>
+</body>
+</html>

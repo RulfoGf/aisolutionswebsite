@@ -1,0 +1,26 @@
+[
+  {
+    "id": "prod-1",
+    "nombre": "Producto 1",
+    "descripcion": "Descripción corta del producto 1. Sustituye este texto por la descripción real.",
+    "precio": 990.00,
+    "moneda": "MXN",
+    "imagen": "/tienda/assets/img/producto-1.jpg"
+  },
+  {
+    "id": "prod-2",
+    "nombre": "Producto 2",
+    "descripcion": "Descripción corta del producto 2. Sustituye este texto por la descripción real.",
+    "precio": 1490.00,
+    "moneda": "MXN",
+    "imagen": "/tienda/assets/img/producto-2.jpg"
+  },
+  {
+    "id": "prod-3",
+    "nombre": "Producto 3",
+    "descripcion": "Descripción corta del producto 3. Sustituye este texto por la descripción real.",
+    "precio": 2490.00,
+    "moneda": "MXN",
+    "imagen": "/tienda/assets/img/producto-3.jpg"
+  }
+]

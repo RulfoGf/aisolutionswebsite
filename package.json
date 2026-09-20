@@ -1,0 +1,9 @@
+{
+  "name": "tienda-aisolutions4you",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Módulo de carrito + pagos con Openpay para aisolutions4you.info, listo para Vercel.",
+  "dependencies": {
+    "openpay": "^1.0.5"
+  }
+}

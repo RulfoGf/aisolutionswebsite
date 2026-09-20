@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estado de tu pedido — AI Solutions4You</title>
+<link rel="stylesheet" href="/tienda/assets/tienda.css">
+</head>
+<body>
+<div class="tienda-wrap">
+  <div class="confirmacion" data-contenido>
+    <div class="icono">⏳</div>
+    <h1>Verificando tu pago…</h1>
+    <p>Un momento, estamos confirmando el estado de tu pedido con Openpay.</p>
+  </div>
+</div>
+
+<script>
+  async function verificar() {
+    const params = new URLSearchParams(window.location.search);
+    // Caso normal: nosotros mismos ponemos "orden" en la URL.
+    // Caso 3D Secure: venimos de vuelta del banco sin query params
+    // propios, así que recuperamos el id guardado antes de salir.
+    const chargeId = params.get("orden") || params.get("id") || localStorage.getItem("ultimo_cargo_id");
+    const cont = document.querySelector("[data-contenido]");
+
+    if (!chargeId) {
+      cont.innerHTML = `
+        <div class="icono">⚠️</div>
+        <h1>No encontramos tu pedido</h1>
+        <p>Si realizaste un pago, revisa tu correo o contáctanos con el número de tu tarjeta y fecha.</p>
+        <a class="btn-primario" href="/tienda/" style="display:inline-block;margin-top:1rem;text-decoration:none">Volver a la tienda</a>`;
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/openpay/check-charge?id=${encodeURIComponent(chargeId)}`);
+      const data = await res.json();
+
+      localStorage.removeItem("ultimo_cargo_id");
+
+      if (res.ok && data.status === "completed") {
+        cont.innerHTML = `
+          <div class="icono">✅</div>
+          <h1>¡Pago confirmado!</h1>
+          <p>Tu pedido <strong>${data.id}</strong> fue aprobado. Te enviaremos los detalles por correo.</p>
+          <a class="btn-primario" href="/" style="display:inline-block;margin-top:1rem;text-decoration:none">Volver al inicio</a>`;
+      } else if (res.ok && data.status === "in_progress") {
+        cont.innerHTML = `
+          <div class="icono">⏳</div>
+          <h1>Tu pago sigue en proceso</h1>
+          <p>Esto puede tardar unos minutos. Te avisaremos por correo en cuanto se confirme.</p>`;
+      } else {
+        cont.innerHTML = `
+          <div class="icono">❌</div>
+          <h1>El pago no se completó</h1>
+          <p>${(data && data.error) || "La transacción fue rechazada o cancelada."}</p>
+          <a class="btn-primario" href="/tienda/checkout.html" style="display:inline-block;margin-top:1rem;text-decoration:none">Intentar de nuevo</a>`;
+      }
+    } catch (e) {
+      cont.innerHTML = `
+        <div class="icono">⚠️</div>
+        <h1>No pudimos verificar el pago</h1>
+        <p>Contáctanos indicando la hora de tu compra para confirmar manualmente.</p>`;
+    }
+  }
+  verificar();
+</script>
+</body>
+</html>
