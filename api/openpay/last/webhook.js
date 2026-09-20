@@ -49,10 +49,12 @@ module.exports = async (req, res) => {
   console.log("Webhook de Openpay recibido:", evento.type, chargeId);
 
   if (chargeId) {
-    const openpay = new Openpay();
-    openpay.setMerchantId(process.env.OPENPAY_MERCHANT_ID);
-    openpay.setPrivateKey(process.env.OPENPAY_PRIVATE_KEY);
-    openpay.setProductionReady(process.env.OPENPAY_PRODUCTION === "true");
+    const openpay = new Openpay(
+      process.env.OPENPAY_MERCHANT_ID,
+      process.env.OPENPAY_PRIVATE_KEY,
+      "mx",
+      process.env.OPENPAY_PRODUCTION === "true"
+    );
 
     openpay.charges.get(chargeId, (error, body) => {
       if (error) {

@@ -14,13 +14,12 @@ const productos = JSON.parse(
 );
 
 function clienteOpenpay() {
-  // El constructor de esta versión del SDK solo acepta (merchantId,
-  // privateKey, isProductionReady) — sin parámetro de país. Usamos los
-  // setters explícitos para no depender del orden de los argumentos.
-  const openpay = new Openpay();
-  openpay.setMerchantId(process.env.OPENPAY_MERCHANT_ID);
-  openpay.setPrivateKey(process.env.OPENPAY_PRIVATE_KEY);
-  openpay.setProductionReady(process.env.OPENPAY_PRODUCTION === "true");
+  const openpay = new Openpay(
+    process.env.OPENPAY_MERCHANT_ID,
+    process.env.OPENPAY_PRIVATE_KEY,
+    "mx",
+    process.env.OPENPAY_PRODUCTION === "true"
+  );
   return openpay;
 }
 
@@ -56,6 +55,21 @@ module.exports = async (req, res) => {
     res.status(405).json({ error: "Método no permitido" });
     return;
   }
+
+  // --- DIAGNÓSTICO TEMPORAL --------------------------------------------
+  // No expone las llaves completas, solo su largo y unos caracteres, para
+  // poder comparar contra el Dashboard de Openpay sin revelar el secreto.
+  // Bórralo (este bloque completo) en cuanto confirmes que coinciden.
+  const mid = process.env.OPENPAY_MERCHANT_ID || "";
+  const pk = process.env.OPENPAY_PRIVATE_KEY || "";
+  console.log("DEBUG openpay env:", {
+    merchant_id_len: mid.length,
+    merchant_id_preview: mid.slice(0, 4) + "…" + mid.slice(-2),
+    private_key_len: pk.length,
+    private_key_prefix: pk.slice(0, 4),
+    production: process.env.OPENPAY_PRODUCTION,
+  });
+  // -----------------------------------------------------------------------
 
   try {
     const { token_id, device_session_id, items, cliente } = req.body || {};
