@@ -59,7 +59,10 @@ module.exports = async (req, res) => {
   try {
     const { token_id, device_session_id, items, cliente } = req.body || {};
 
-    if (!token_id || !device_session_id || !Array.isArray(items) || items.length === 0) {
+    // device_session_id es recomendado (antifraude) pero Openpay puede
+    // devolverlo vacío en Sandbox ("Empty beaconKey normal in Sandbox" en
+    // consola) — no lo hacemos obligatorio para no bloquear pagos válidos.
+    if (!token_id || !Array.isArray(items) || items.length === 0) {
       res.status(400).json({ error: "Solicitud incompleta." });
       return;
     }
@@ -83,7 +86,6 @@ module.exports = async (req, res) => {
       amount: total,
       currency: detalle[0].moneda || "MXN",
       description: `Pedido ${orderId} — ${detalle.map((d) => `${d.nombre} x${d.cantidad}`).join(", ")}`,
-      device_session_id,
       order_id: orderId,
       use_3d_secure: true,
       redirect_url: `${urlBase(req)}/tienda/gracias.html`,
@@ -94,6 +96,10 @@ module.exports = async (req, res) => {
         phone_number: cliente.telefono || undefined,
       },
     };
+
+    if (device_session_id) {
+      chargeRequest.device_session_id = device_session_id;
+    }
 
     const openpay = clienteOpenpay();
 
