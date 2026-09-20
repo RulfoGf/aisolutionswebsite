@@ -27,8 +27,8 @@ module.exports = async (req, res) => {
 
   openpay.charges.get(chargeId, (error, body) => {
     if (error) {
-      console.error("Error al consultar cargo:", error);
-      res.status(error.status || 404).json({ error: "No se encontró el cargo." });
+      console.error("Error al consultar cargo:", JSON.stringify(error));
+      res.status(error.http_code || 404).json({ error: "No se encontró el cargo." });
       return;
     }
     res.status(200).json({ id: body.id, status: body.status });

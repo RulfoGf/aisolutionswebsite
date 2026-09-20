@@ -105,12 +105,14 @@ module.exports = async (req, res) => {
 
     openpay.charges.create(chargeRequest, (error, body) => {
       if (error) {
-        console.error("Error al crear cargo en Openpay:", error);
+        // El SDK de Openpay entrega aquí el cuerpo de error "plano" de su
+        // API (description, error_code, http_code, category) cuando la
+        // respuesta no es 200/201/204, o un error de red/conexión si la
+        // petición ni siquiera llegó a Openpay.
+        console.error("Error al crear cargo en Openpay:", JSON.stringify(error));
         const mensaje =
-          (error.data && error.data.description) ||
-          error.message ||
-          "No se pudo procesar el pago con Openpay.";
-        res.status(error.status || 402).json({ error: mensaje });
+          error.description || error.message || "No se pudo procesar el pago con Openpay.";
+        res.status(error.http_code || 402).json({ error: mensaje, error_code: error.error_code });
         return;
       }
 
