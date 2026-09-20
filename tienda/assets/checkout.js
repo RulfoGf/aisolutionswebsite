@@ -28,7 +28,10 @@
   OpenPay.setId(cfg.MERCHANT_ID);
   OpenPay.setApiKey(cfg.PUBLIC_KEY);
   OpenPay.setSandboxMode(cfg.SANDBOX);
-  OpenPay.deviceData.setup("form-pago", "deviceIdHiddenFieldName");
+  // deviceData.setup() DEVUELVE el device_session_id directamente (además
+  // de escribirlo en un campo oculto) — lo guardamos aquí para no depender
+  // de leer el DOM más tarde, por si acaso.
+  const deviceSessionId = OpenPay.deviceData.setup("form-pago", "deviceIdHiddenFieldName");
 
   const form = document.getElementById("form-pago");
   const btnPagar = document.querySelector("[data-btn-pagar]");
@@ -68,11 +71,24 @@
 
   async function onTokenExito(respuesta) {
     const tokenId = respuesta.data.id;
-    const deviceSessionId = document.getElementById("deviceIdHiddenFieldName").value;
+    // Preferimos el valor devuelto por deviceData.setup(); si por algo
+    // viniera vacío, intentamos leer el campo oculto como respaldo.
+    const dsid =
+      deviceSessionId ||
+      (document.getElementById("deviceIdHiddenFieldName") || {}).value;
+
+    if (!dsid) {
+      mostrarError(
+        "No se pudo preparar el pago de forma segura (falta información del dispositivo). Recarga la página e intenta de nuevo."
+      );
+      btnPagar.disabled = false;
+      btnPagar.textContent = "Pagar";
+      return;
+    }
 
     const pedido = {
       token_id: tokenId,
-      device_session_id: deviceSessionId,
+      device_session_id: dsid,
       items: leerCarrito().map((i) => ({ id: i.id, cantidad: i.cantidad })),
       cliente: {
         nombre: form.querySelector('[data-openpay-card="holder_name"]').value,

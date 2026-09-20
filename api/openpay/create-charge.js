@@ -60,10 +60,8 @@ module.exports = async (req, res) => {
   try {
     const { token_id, device_session_id, items, cliente } = req.body || {};
 
-    // device_session_id es recomendado (antifraude) pero Openpay puede
-    // devolverlo vacío en Sandbox ("Empty beaconKey normal in Sandbox" en
-    // consola) — no lo hacemos obligatorio para no bloquear pagos válidos.
-    if (!token_id || !Array.isArray(items) || items.length === 0) {
+    // Openpay exige device_session_id para cargos con tarjeta (antifraude).
+    if (!token_id || !device_session_id || !Array.isArray(items) || items.length === 0) {
       res.status(400).json({ error: "Solicitud incompleta." });
       return;
     }
