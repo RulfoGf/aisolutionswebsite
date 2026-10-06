@@ -29,6 +29,16 @@ module.exports = async (req, res) => {
       res.status(error.http_code || 404).json({ error: "No se encontró el cargo." });
       return;
     }
-    res.status(200).json({ id: body.id, status: body.status });
+    res.status(200).json({
+      id: body.id,
+      status: body.status,
+      payment_method: body.payment_method
+        ? {
+            type: body.payment_method.type,
+            reference: body.payment_method.reference,
+            barcode_url: body.payment_method.barcode_url,
+          }
+        : null,
+    });
   });
 };

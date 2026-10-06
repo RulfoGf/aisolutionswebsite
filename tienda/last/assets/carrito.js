@@ -3,7 +3,6 @@
    Compartido entre tienda/index.html y tienda/checkout.html.
    ============================================================ */
 const CARRITO_KEY = "aisolutions_carrito";
-const IVA_RATE = 0.16;
 
 function leerCarrito() {
   try {
@@ -30,7 +29,6 @@ function agregarAlCarrito(producto, cantidad = 1) {
       id: producto.id,
       nombre: producto.nombre,
       precio: producto.precio,
-      ivaIncluido: producto.ivaIncluido === true,
       imagen: producto.imagen,
       cantidad,
     });
@@ -54,34 +52,8 @@ function quitarDelCarrito(id) {
   renderizarCarrito();
 }
 
-// Cada producto indica si su precio en productos.json ya incluye el IVA
-// (ivaIncluido: true) o no (ivaIncluido: false / ausente). El desglose se
-// calcula por línea y luego se suma, para poder mezclar en el mismo
-// carrito productos con y sin IVA incluido.
-function desgloseItem(item) {
-  const cantidad = item.cantidad;
-  if (item.ivaIncluido) {
-    const total = Math.round(item.precio * cantidad * 100) / 100;
-    const subtotal = Math.round((total / (1 + IVA_RATE)) * 100) / 100;
-    const iva = Math.round((total - subtotal) * 100) / 100;
-    return { subtotal, iva, total };
-  }
-  const subtotal = Math.round(item.precio * cantidad * 100) / 100;
-  const iva = Math.round(subtotal * IVA_RATE * 100) / 100;
-  const total = Math.round((subtotal + iva) * 100) / 100;
-  return { subtotal, iva, total };
-}
-
-function subtotalCarrito() {
-  return Math.round(leerCarrito().reduce((acc, i) => acc + desgloseItem(i).subtotal, 0) * 100) / 100;
-}
-
-function ivaCarrito() {
-  return Math.round(leerCarrito().reduce((acc, i) => acc + desgloseItem(i).iva, 0) * 100) / 100;
-}
-
 function totalCarrito() {
-  return Math.round(leerCarrito().reduce((acc, i) => acc + desgloseItem(i).total, 0) * 100) / 100;
+  return leerCarrito().reduce((acc, i) => acc + i.precio * i.cantidad, 0);
 }
 
 function formatoMoneda(valor) {
@@ -137,13 +109,7 @@ function renderizarCarrito() {
   }
 
   const subtotalEl = document.querySelector("[data-subtotal-carrito]");
-  if (subtotalEl) subtotalEl.textContent = formatoMoneda(subtotalCarrito());
-
-  const ivaEl = document.querySelector("[data-iva-carrito]");
-  if (ivaEl) ivaEl.textContent = formatoMoneda(ivaCarrito());
-
-  const totalEl = document.querySelector("[data-total-carrito]");
-  if (totalEl) totalEl.textContent = formatoMoneda(totalCarrito());
+  if (subtotalEl) subtotalEl.textContent = formatoMoneda(totalCarrito());
 
   const btnPagar = document.querySelector("[data-ir-checkout]");
   if (btnPagar) btnPagar.disabled = items.length === 0;

@@ -19,6 +19,17 @@
       <h2>Datos de pago</h2>
       <div class="mensaje-error" data-error></div>
 
+      <div class="metodo-pago-selector" role="radiogroup" aria-label="Método de pago">
+        <label class="metodo-pago-opcion">
+          <input type="radio" name="metodoPago" value="tarjeta" checked>
+          💳 Tarjeta
+        </label>
+        <label class="metodo-pago-opcion">
+          <input type="radio" name="metodoPago" value="efectivo">
+          🏪 Efectivo (OXXO y más)
+        </label>
+      </div>
+
       <form id="form-pago" novalidate>
         <input type="hidden" id="deviceIdHiddenFieldName" name="deviceIdHiddenFieldName">
         <div class="campo">
@@ -34,33 +45,39 @@
           <input type="tel" id="cliente-telefono" required>
         </div>
 
-        <div class="campo">
-          <label>Número de tarjeta</label>
-          <input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="cc-number" maxlength="16"
-                 data-openpay-card="card_number" required>
-        </div>
-        <div class="campo-fila">
+        <div data-campos-tarjeta>
           <div class="campo">
-            <label>Mes de expiración (MM)</label>
-            <input type="text" inputmode="numeric" maxlength="2" placeholder="MM"
-                   data-openpay-card="expiration_month" required>
+            <label>Número de tarjeta</label>
+            <input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="cc-number" maxlength="16"
+                   data-openpay-card="card_number" required>
+          </div>
+          <div class="campo-fila">
+            <div class="campo">
+              <label>Mes de expiración (MM)</label>
+              <input type="text" inputmode="numeric" maxlength="2" placeholder="MM"
+                     data-openpay-card="expiration_month" required>
+            </div>
+            <div class="campo">
+              <label>Año de expiración (AA)</label>
+              <input type="text" inputmode="numeric" maxlength="2" placeholder="AA"
+                     data-openpay-card="expiration_year" required>
+            </div>
           </div>
           <div class="campo">
-            <label>Año de expiración (AA)</label>
-            <input type="text" inputmode="numeric" maxlength="2" placeholder="AA"
-                   data-openpay-card="expiration_year" required>
+            <label>CVV</label>
+            <input type="text" inputmode="numeric" maxlength="4" style="max-width:120px"
+                   data-openpay-card="cvv2" required>
           </div>
         </div>
-        <div class="campo">
-          <label>CVV</label>
-          <input type="text" inputmode="numeric" maxlength="4" style="max-width:120px"
-                 data-openpay-card="cvv2" required>
+
+        <div class="aviso-efectivo" data-aviso-efectivo style="display:none">
+          🏪 Al continuar generamos una referencia de pago. Llévala a cualquier tienda OXXO, 7-Eleven u otra tienda participante de Openpay y paga en efectivo con el código de barras o la referencia.
         </div>
 
         <button type="submit" class="btn-primario" style="width:100%" data-btn-pagar>
           Pagar
         </button>
-        <div class="candado">🔒 Tus datos de tarjeta se envían directo a Openpay; este sitio no los almacena.</div>
+        <div class="candado" data-candado-tarjeta>🔒 Tus datos de tarjeta se envían directo a Openpay; este sitio no los almacena.</div>
       </form>
     </section>
 
@@ -68,11 +85,39 @@
       <h2>Resumen del pedido</h2>
       <div data-resumen-items></div>
       <div class="resumen-total">
-        <span>Total</span>
+        <span>Subtotal</span>
+        <span data-resumen-subtotal>$0.00</span>
+      </div>
+      <div class="resumen-total">
+        <span>IVA (16%)</span>
+        <span data-resumen-iva>$0.00</span>
+      </div>
+      <div class="resumen-total total-final">
+        <span>Total a pagar</span>
         <span data-resumen-total>$0.00</span>
       </div>
     </aside>
   </div>
+
+  <footer class="tienda-footer-confianza">
+    <div class="confianza-item">
+      <img class="logo-openpay" src="/tienda/assets/img/pagos/openpay-logo-blanco.png" alt="Openpay by BBVA">
+      <p>🔒 Pagos procesados de forma segura por Openpay. Tus datos de tarjeta se envían directo a Openpay; este sitio nunca los almacena.</p>
+    </div>
+    <div class="marcas-tarjetas">
+      <img src="/tienda/assets/img/pagos/visa.png" alt="Visa">
+      <img src="/tienda/assets/img/pagos/mastercard.png" alt="Mastercard">
+      <img src="/tienda/assets/img/pagos/american-express.png" alt="American Express">
+      <img src="/tienda/assets/img/pagos/carnet.png" alt="Carnet">
+      <img class="sello-efectivo" src="/tienda/assets/img/pagos/sello-pago-efectivo.png" alt="Compras en línea, pagas en efectivo">
+    </div>
+  </footer>
+
+  <nav class="tienda-footer-links">
+    <a href="https://www.ai-solutions4you.info/#section-register" target="_blank" rel="noopener">Contacto</a>
+    <span aria-hidden="true">·</span>
+    <a href="https://www.ai-solutions4you.info/politicadeprivacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a>
+  </nav>
 </div>
 
 <script src="/tienda/assets/carrito.js"></script>

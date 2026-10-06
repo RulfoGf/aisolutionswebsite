@@ -13,12 +13,6 @@
     <h1>Verificando tu pago…</h1>
     <p>Un momento, estamos confirmando el estado de tu pedido con Openpay.</p>
   </div>
-
-  <nav class="tienda-footer-links">
-    <a href="https://www.ai-solutions4you.info/#section-register" target="_blank" rel="noopener">Contacto</a>
-    <span aria-hidden="true">·</span>
-    <a href="https://www.ai-solutions4you.info/politicadeprivacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a>
-  </nav>
 </div>
 
 <script>
@@ -45,26 +39,12 @@
 
       localStorage.removeItem("ultimo_cargo_id");
 
-      const esEfectivo = data.payment_method && data.payment_method.type === "store";
-
       if (res.ok && data.status === "completed") {
         cont.innerHTML = `
           <div class="icono">✅</div>
           <h1>¡Pago confirmado!</h1>
           <p>Tu pedido <strong>${data.id}</strong> fue aprobado. Te enviaremos los detalles por correo.</p>
           <a class="btn-primario" href="/" style="display:inline-block;margin-top:1rem;text-decoration:none">Volver al inicio</a>`;
-      } else if (res.ok && data.status === "in_progress" && esEfectivo) {
-        const ref = data.payment_method.reference || "";
-        const barcodeUrl = data.payment_method.barcode_url || "";
-        cont.innerHTML = `
-          <div class="icono">🏪</div>
-          <h1>Falta pagar en tienda</h1>
-          <p>Lleva esta referencia a cualquier OXXO, 7-Eleven u otra tienda participante de Openpay y paga en efectivo. En cuanto se registre el pago te avisaremos por correo.</p>
-          <div class="pago-efectivo-detalle">
-            <div>Referencia de pago</div>
-            <div class="referencia">${ref}</div>
-            ${barcodeUrl ? `<img class="barcode" src="${barcodeUrl}" alt="Código de barras de pago">` : ""}
-          </div>`;
       } else if (res.ok && data.status === "in_progress") {
         cont.innerHTML = `
           <div class="icono">⏳</div>

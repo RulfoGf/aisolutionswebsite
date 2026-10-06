@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pago seguro — AI Solutions4You</title>
+<link rel="stylesheet" href="/tienda/assets/tienda.css">
+<script src="https://resources.openpay.mx/lib/openpay-js/1.2.38/openpay.v1.min.js"></script>
+<script src="https://resources.openpay.mx/lib/openpay-data-js/1.2.38/openpay-data.v1.min.js"></script>
+</head>
+<body>
+<div class="tienda-wrap">
+  <header class="tienda-header">
+    <a class="logo" href="/tienda/">← Seguir comprando</a>
+  </header>
+
+  <div class="checkout-wrap">
+    <section class="panel">
+      <h2>Datos de pago</h2>
+      <div class="mensaje-error" data-error></div>
+
+      <form id="form-pago" novalidate>
+        <input type="hidden" id="deviceIdHiddenFieldName" name="deviceIdHiddenFieldName">
+        <div class="campo">
+          <label>Nombre completo</label>
+          <input type="text" name="nombre" data-openpay-card="holder_name" required>
+        </div>
+        <div class="campo">
+          <label>Correo electrónico</label>
+          <input type="email" id="cliente-email" required>
+        </div>
+        <div class="campo">
+          <label>Teléfono</label>
+          <input type="tel" id="cliente-telefono" required>
+        </div>
+
+        <div class="campo">
+          <label>Número de tarjeta</label>
+          <input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="cc-number" maxlength="16"
+                 data-openpay-card="card_number" required>
+        </div>
+        <div class="campo-fila">
+          <div class="campo">
+            <label>Mes de expiración (MM)</label>
+            <input type="text" inputmode="numeric" maxlength="2" placeholder="MM"
+                   data-openpay-card="expiration_month" required>
+          </div>
+          <div class="campo">
+            <label>Año de expiración (AA)</label>
+            <input type="text" inputmode="numeric" maxlength="2" placeholder="AA"
+                   data-openpay-card="expiration_year" required>
+          </div>
+        </div>
+        <div class="campo">
+          <label>CVV</label>
+          <input type="text" inputmode="numeric" maxlength="4" style="max-width:120px"
+                 data-openpay-card="cvv2" required>
+        </div>
+
+        <button type="submit" class="btn-primario" style="width:100%" data-btn-pagar>
+          Pagar
+        </button>
+        <div class="candado">🔒 Tus datos de tarjeta se envían directo a Openpay; este sitio no los almacena.</div>
+      </form>
+    </section>
+
+    <aside class="panel" data-resumen>
+      <h2>Resumen del pedido</h2>
+      <div data-resumen-items></div>
+      <div class="resumen-total">
+        <span>Total</span>
+        <span data-resumen-total>$0.00</span>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script src="/tienda/assets/carrito.js"></script>
+<script src="/tienda/assets/config.js"></script>
+<script src="/tienda/assets/checkout.js"></script>
+</body>
+</html>
