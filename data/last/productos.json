@@ -1,26 +1,29 @@
 [
   {
     "id": "prod-1",
-    "nombre": "Producto 1",
-    "descripcion": "Descripción corta del producto 1. Sustituye este texto por la descripción real.",
-    "precio": 990.00,
+    "nombre": "Workstation ThinkPad P16 Gen3 Intel Core Ultra",
+    "descripcion": "Workstation móvil ThinkPad P16 Gen3. Procesador Intel Core Ultra 7 265HX, 36GB de RAM, almacenamiento 1TB + 512GB SSD, tarjeta gráfica NVIDIA RTX PRO 2000 Blackwell de 8GB GDDR7, Windows 11 Pro. Incluye de 1 a 3 años de garantía.",
+    "precio": 63999.00,
     "moneda": "MXN",
-    "imagen": "/tienda/assets/img/producto-1.jpg"
+    "ivaIncluido": false,
+    "imagen": "/tienda/assets/img/producto-1.png"
   },
   {
     "id": "prod-2",
-    "nombre": "Producto 2",
-    "descripcion": "Descripción corta del producto 2. Sustituye este texto por la descripción real.",
-    "precio": 1490.00,
+    "nombre": "Notebook ThinkBook 14",
+    "descripcion": "ThinkBook 14 G7 IML, 14\". Procesador Intel Core Ultra 7 155H, 16GB de RAM SODIMM DDR5-5600, almacenamiento 512GB SSD M.2 2242. Incluye de 1 a 3 años de garantía Premier Support. Precio con IVA incluido.",
+    "precio": 22038.00,
     "moneda": "MXN",
-    "imagen": "/tienda/assets/img/producto-2.jpg"
+    "ivaIncluido": true,
+    "imagen": "/tienda/assets/img/producto-2.png"
   },
   {
     "id": "prod-3",
-    "nombre": "Producto 3",
-    "descripcion": "Descripción corta del producto 3. Sustituye este texto por la descripción real.",
-    "precio": 2490.00,
+    "nombre": "Mini PC ThinkCentre neo 50q Gen 5 + Monitor ThinkVision S22-4e",
+    "descripcion": "Desktop ThinkCentre neo 50q Gen 5. Procesador Intel Core i5-13420H, 16GB de RAM SODIMM DDR5-5600, almacenamiento 512GB SSD M.2 2280, Windows 11 Pro (español). Incluye Monitor ThinkVision S22-4e de 21.5 pulgadas. Incluye de 1 a 3 años de garantía Premier Support. Precio con IVA incluido.",
+    "precio": 17978.84,
     "moneda": "MXN",
-    "imagen": "/tienda/assets/img/producto-3.jpg"
+    "ivaIncluido": true,
+    "imagen": "/tienda/assets/img/producto-3.png"
   }
 ]

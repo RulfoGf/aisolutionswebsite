@@ -19,6 +19,26 @@
   <main class="tienda-grid" data-grid-productos>
     <!-- Las tarjetas de producto se insertan aquí vía JS -->
   </main>
+
+  <footer class="tienda-footer-confianza">
+    <div class="confianza-item">
+      <img class="logo-openpay" src="/tienda/assets/img/pagos/openpay-logo-blanco.png" alt="Openpay by BBVA">
+      <p>🔒 Pagos procesados de forma segura por Openpay. Tus datos de tarjeta se envían directo a Openpay; este sitio nunca los almacena.</p>
+    </div>
+    <div class="marcas-tarjetas">
+      <img src="/tienda/assets/img/pagos/visa.png" alt="Visa">
+      <img src="/tienda/assets/img/pagos/mastercard.png" alt="Mastercard">
+      <img src="/tienda/assets/img/pagos/american-express.png" alt="American Express">
+      <img src="/tienda/assets/img/pagos/carnet.png" alt="Carnet">
+      <img class="sello-efectivo" src="/tienda/assets/img/pagos/sello-pago-efectivo.png" alt="Compras en línea, pagas en efectivo">
+    </div>
+  </footer>
+
+  <nav class="tienda-footer-links">
+    <a href="https://www.ai-solutions4you.info/#section-register" target="_blank" rel="noopener">Contacto</a>
+    <span aria-hidden="true">·</span>
+    <a href="https://www.ai-solutions4you.info/politicadeprivacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a>
+  </nav>
 </div>
 
 <!-- Panel lateral del carrito -->
@@ -33,6 +53,14 @@
     <div class="subtotal">
       <span>Subtotal</span>
       <span data-subtotal-carrito>$0.00</span>
+    </div>
+    <div class="subtotal">
+      <span>IVA (16%)</span>
+      <span data-iva-carrito>$0.00</span>
+    </div>
+    <div class="subtotal total-final">
+      <span>Total</span>
+      <span data-total-carrito>$0.00</span>
     </div>
     <button class="btn-primario" style="width:100%" data-ir-checkout onclick="location.href='/tienda/checkout.html'">
       Proceder al pago
@@ -55,7 +83,7 @@
         <div class="info">
           <h3>${p.nombre}</h3>
           <p>${p.descripcion}</p>
-          <div class="precio">${p.precio.toLocaleString("es-MX", { style: "currency", currency: p.moneda || "MXN" })}</div>
+          <div class="precio">${p.precio.toLocaleString("es-MX", { style: "currency", currency: p.moneda || "MXN" })} <span class="precio-nota">${p.ivaIncluido ? "IVA incluido" : "+ IVA"}</span></div>
           <button class="btn-primario" onclick='agregarAlCarrito(${JSON.stringify(p)})'>Agregar al carrito</button>
         </div>
       </div>`

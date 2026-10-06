@@ -44,6 +44,39 @@
   text-decoration: none;
   font-weight: 700;
   font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tienda-header a.logo img {
+  height: 40px;
+  width: 40px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+/* Botón flotante de WhatsApp (mismo número que en ai-solutions4you.info) */
+.boton-whatsapp {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  z-index: 40;
+  transition: transform 0.15s ease;
+}
+.boton-whatsapp:hover { transform: scale(1.08); }
+.boton-whatsapp img { width: 28px; height: 28px; }
+@media (max-width: 600px) {
+  .boton-whatsapp { right: 1rem; bottom: 1rem; width: 50px; height: 50px; }
+  .boton-whatsapp img { width: 25px; height: 25px; }
 }
 
 .btn-carrito {

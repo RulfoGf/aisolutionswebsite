@@ -82,6 +82,53 @@
   gap: 1.5rem;
 }
 
+/* Footer de confianza: sello de Openpay + marcas de tarjetas aceptadas */
+.tienda-footer-confianza {
+  max-width: 1080px;
+  margin: 3rem auto 0;
+  padding: 1.75rem 1.5rem 0;
+  border-top: 1px solid var(--tienda-borde);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.confianza-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 260px;
+}
+.confianza-item .logo-openpay {
+  height: 22px;
+  width: auto;
+  flex-shrink: 0;
+  opacity: 0.95;
+}
+.confianza-item p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--tienda-texto-suave);
+}
+.marcas-tarjetas {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.marcas-tarjetas img {
+  height: 26px;
+  width: auto;
+  border-radius: 4px;
+}
+@media (max-width: 600px) {
+  .tienda-footer-confianza { justify-content: center; text-align: center; }
+  .confianza-item { justify-content: center; }
+}
+
 .tarjeta-producto {
   background: var(--tienda-bg-alt);
   border: 1px solid var(--tienda-borde);
@@ -112,6 +159,11 @@
 .tarjeta-producto .precio {
   font-weight: 700;
   font-size: 1.15rem;
+}
+.tarjeta-producto .precio-nota {
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--tienda-texto-suave);
 }
 
 .btn-primario {
@@ -202,7 +254,10 @@
   border-top: 1px solid var(--tienda-borde);
 }
 .carrito-footer .subtotal {
-  display: flex; justify-content: space-between; margin-bottom: 0.9rem; font-weight: 700;
+  display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-weight: 400; color: var(--tienda-texto-suave); font-size: 0.9rem;
+}
+.carrito-footer .subtotal.total-final {
+  font-weight: 700; color: var(--tienda-texto); font-size: 1.05rem; margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--tienda-borde);
 }
 
 .vacio { color: var(--tienda-texto-suave); text-align: center; padding: 2rem 0; }
@@ -242,7 +297,8 @@
 .campo-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
 .resumen-item { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--tienda-texto-suave); }
-.resumen-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--tienda-borde); }
+.resumen-total { display: flex; justify-content: space-between; font-weight: 400; color: var(--tienda-texto-suave); font-size: 0.9rem; margin-top: 0.4rem; }
+.resumen-total.total-final { font-weight: 700; font-size: 1.1rem; color: var(--tienda-texto); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--tienda-borde); }
 
 .mensaje-error {
   background: rgba(229,72,77,0.12);
@@ -273,3 +329,85 @@
   padding: 0 1.5rem;
 }
 .confirmacion .icono { font-size: 3rem; margin-bottom: 1rem; }
+
+/* Selector de método de pago (tarjeta / efectivo) */
+.metodo-pago-selector {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.metodo-pago-opcion {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--tienda-borde);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  background: var(--tienda-bg);
+  color: var(--tienda-texto-suave);
+}
+.metodo-pago-opcion:has(input:checked) {
+  border-color: var(--tienda-acento);
+  color: var(--tienda-texto);
+  background: rgba(79,124,255,0.1);
+}
+.metodo-pago-opcion input { accent-color: var(--tienda-acento); }
+
+.aviso-efectivo {
+  background: rgba(79,124,255,0.1);
+  border: 1px solid var(--tienda-acento);
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--tienda-texto);
+  margin-bottom: 1rem;
+}
+
+/* Sello "pagas en efectivo" dentro de la fila de marcas de tarjetas */
+.marcas-tarjetas img.sello-efectivo {
+  height: 40px;
+  border-radius: 0;
+}
+
+/* Enlaces de pie de página (Contacto / Aviso de privacidad) */
+.tienda-footer-links {
+  max-width: 1080px;
+  margin: 1rem auto 0;
+  padding: 0 1.5rem 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: var(--tienda-texto-suave);
+}
+.tienda-footer-links a { color: var(--tienda-texto-suave); text-decoration: underline; }
+.tienda-footer-links a:hover { color: var(--tienda-texto); }
+
+/* Pago en efectivo: referencia + código de barras (gracias.html) */
+.pago-efectivo-detalle {
+  background: var(--tienda-bg-alt);
+  border: 1px solid var(--tienda-borde);
+  border-radius: var(--tienda-radio);
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+.pago-efectivo-detalle .referencia {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin: 0.75rem 0;
+}
+.pago-efectivo-detalle img.barcode {
+  display: block;
+  margin: 0.75rem auto;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
