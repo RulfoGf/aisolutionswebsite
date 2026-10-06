@@ -9,7 +9,10 @@
 <body>
 <div class="tienda-wrap">
   <header class="tienda-header">
-    <a class="logo" href="/">← AI Solutions4You</a>
+    <a class="logo" href="/">
+      <img src="/tienda/assets/img/logo-aisolutions.png" alt="AI Solutions4You" width="40" height="40">
+      <span>AI Solutions4You</span>
+    </a>
     <button class="btn-carrito" onclick="abrirCarrito()">
       🛒 Carrito
       <span class="contador" data-contador-carrito style="display:none">0</span>
@@ -23,7 +26,7 @@
   <footer class="tienda-footer-confianza">
     <div class="confianza-item">
       <img class="logo-openpay" src="/tienda/assets/img/pagos/openpay-logo-blanco.png" alt="Openpay by BBVA">
-      <p>🔒 Pagos procesados de forma segura por Openpay. Tus datos de tarjeta se envían directo a Openpay; este sitio nunca los almacena.</p>
+      <p>🔒 Pagos procesados de forma segura por Openpay. Tus datos de tarjeta se envían directo a Openpay; este sitio nunca los almacena. Conexión protegida con certificado SSL/TLS.</p>
     </div>
     <div class="marcas-tarjetas">
       <img src="/tienda/assets/img/pagos/visa.png" alt="Visa">
@@ -40,6 +43,11 @@
     <a href="https://www.ai-solutions4you.info/politicadeprivacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a>
   </nav>
 </div>
+
+<!-- Botón flotante de WhatsApp (mismo número que en ai-solutions4you.info) -->
+<a class="boton-whatsapp" href="https://wa.me/5215652625387" target="_blank" rel="noopener" aria-label="Chatea con nosotros por WhatsApp">
+  <img src="/tienda/assets/img/whatsapp-icon.svg" alt="" width="28" height="28">
+</a>
 
 <!-- Panel lateral del carrito -->
 <div class="carrito-overlay" onclick="cerrarCarrito()"></div>

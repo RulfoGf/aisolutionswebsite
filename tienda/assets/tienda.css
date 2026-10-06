@@ -19,10 +19,19 @@
 
 .tienda-wrap * { box-sizing: border-box; }
 
+html, body {
+  background: var(--tienda-bg);
+  margin: 0;
+}
+
 .tienda-wrap {
   font-family: var(--tienda-fuente);
   color: var(--tienda-texto);
-  background: var(--tienda-bg);
+  background-color: var(--tienda-bg);
+  background-image: linear-gradient(180deg, rgba(8,6,18,0.88), rgba(8,6,18,0.94)), url("/tienda/assets/img/fondo-tienda.jpg");
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
   min-height: 100vh;
   padding: 0 0 4rem;
 }
@@ -160,6 +169,40 @@
 @media (max-width: 600px) {
   .tienda-footer-confianza { justify-content: center; text-align: center; }
   .confianza-item { justify-content: center; }
+}
+
+/* Bancos participantes en meses sin intereses (MSI) */
+.tienda-footer-bancos {
+  max-width: 1080px;
+  margin: 1.5rem auto 0;
+  padding: 0 1.5rem;
+}
+.tienda-footer-bancos .titulo-bancos {
+  font-size: 0.78rem;
+  color: var(--tienda-texto-suave);
+  margin: 0 0 0.75rem;
+  text-align: center;
+}
+.grid-bancos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.grid-bancos .chip-banco {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+}
+.grid-bancos .chip-banco img {
+  height: 100%;
+  max-width: 90px;
+  width: auto;
+  object-fit: contain;
 }
 
 .tarjeta-producto {
