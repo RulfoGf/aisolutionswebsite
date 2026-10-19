@@ -4,19 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tienda — AI Solutions4You</title>
+<link rel="stylesheet" href="/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+<link rel="stylesheet" href="/css/bg.css" type="text/css">
+<link rel="stylesheet" href="/css/colors/magenta.css" type="text/css" id="colors">
+<link rel="stylesheet" href="/css/color.css" type="text/css">
+<link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css" type="text/css">
+<link rel="stylesheet" href="/fonts/elegant_font/HTML_CSS/style.css" type="text/css">
+<link rel="stylesheet" href="/fonts/et-line-font/style.css" type="text/css">
+<link rel="stylesheet" href="/css/font-style.css" type="text/css">
 <link rel="stylesheet" href="/tienda/assets/tienda.css">
 </head>
 <body>
 <div class="tienda-wrap">
-  <header class="tienda-header">
-    <a class="logo" href="/">
-      <img src="/tienda/assets/img/logo-aisolutions.png" alt="AI Solutions4You" width="40" height="40">
-      <span>AI Solutions4You</span>
-    </a>
-    <button class="btn-carrito" onclick="abrirCarrito()">
-      🛒 Carrito
-      <span class="contador" data-contador-carrito style="display:none">0</span>
-    </button>
+  <header class="transparent tienda-site-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="logo">
+            <a href="https://www.ai-solutions4you.info/">
+              <img class="logo" src="/images-event/logo.png" alt="AI Solutions4You">
+            </a>
+          </div>
+          <span id="menu-btn"></span>
+          <nav>
+            <ul id="mainmenu" class="ms-2">
+              <li><a href="https://www.ai-solutions4you.info/#section-hero">Home<span></span></a></li>
+              <li><a href="https://www.ai-solutions4you.info/#section-about">Nuestra Estrategia<span></span></a></li>
+              <li><a href="https://www.ai-solutions4you.info/#section-sponsors">Testimonios<span></span></a></li>
+              <li><a href="https://www.ai-solutions4you.info/#section-schedule">Nuestra Metodología<span></span></a></li>
+              <li><a href="https://www.ai-solutions4you.info/#section-register">Contacto<span></span></a></li>
+              <li><a href="/tienda/">Equipo de Cómputo<span></span></a></li>
+
+              <div class="social-icons">
+                <a href="tel:+525593377333"><i class="fa fa-microphone fa-lg"></i></a>
+                <a href="https://wa.me/5215652625387"><i class="fa fa-whatsapp fa-lg"></i></a>
+                <a href="#" class="btn-carrito" onclick="abrirCarrito()">
+                  🛒 Carrito
+                  <span class="contador" data-contador-carrito style="display:none">0</span>
+                </a>
+              </div>
+
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
   </header>
 
   <main class="tienda-grid" data-grid-productos>
@@ -122,5 +155,11 @@
 
   cargarProductos();
 </script>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/easing.js"></script>
+<script src="/js/classie.js"></script>
+<script src="/js/enquire.min.js"></script>
+<script src="/js/designesia.js"></script>
 </body>
 </html>
