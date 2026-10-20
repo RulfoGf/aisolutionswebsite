@@ -101,6 +101,7 @@
       localStorage.removeItem("ultimo_cargo_id");
 
       const esEfectivo = data.payment_method && data.payment_method.type === "store";
+      const esTransferencia = data.payment_method && data.payment_method.type === "bank_transfer";
 
       if (res.ok && data.status === "completed") {
         cont.innerHTML = `
@@ -119,6 +120,20 @@
             <div>Referencia de pago</div>
             <div class="referencia">${ref}</div>
             ${barcodeUrl ? `<img class="barcode" src="${barcodeUrl}" alt="Código de barras de pago">` : ""}
+          </div>`;
+      } else if (res.ok && data.status === "in_progress" && esTransferencia) {
+        const pm = data.payment_method;
+        const filaDato = (etiqueta, valor) =>
+          valor ? `<div class="dato-transferencia"><span>${etiqueta}</span><strong>${valor}</strong></div>` : "";
+        cont.innerHTML = `
+          <div class="icono">🏦</div>
+          <h1>Falta completar tu transferencia</h1>
+          <p>Te enviamos estos datos también por correo. Transfiere el monto exacto desde tu banca en línea. En cuanto el banco registre el pago te avisaremos por correo (normalmente el mismo día hábil).</p>
+          <div class="pago-efectivo-detalle">
+            ${filaDato("Banco", pm.bank)}
+            ${filaDato("CLABE", pm.clabe)}
+            ${filaDato("Convenio (BBVA)", pm.agreement)}
+            ${filaDato("Referencia / concepto", pm.name)}
           </div>`;
       } else if (res.ok && data.status === "in_progress") {
         cont.innerHTML = `

@@ -36,6 +36,7 @@
   const cajaError = document.querySelector("[data-error]");
   const camposTarjeta = document.querySelector("[data-campos-tarjeta]");
   const avisoEfectivo = document.querySelector("[data-aviso-efectivo]");
+  const avisoTransferencia = document.querySelector("[data-aviso-transferencia]");
   const candadoTarjeta = document.querySelector("[data-candado-tarjeta]");
 
   function mostrarError(msg) {
@@ -57,34 +58,42 @@
   }
 
   function textoBotonPago() {
-    return metodoPagoActual() === "efectivo" ? "Generar referencia de pago" : "Pagar";
+    const metodo = metodoPagoActual();
+    if (metodo === "efectivo") return "Generar referencia de pago";
+    if (metodo === "transferencia") return "Generar datos de transferencia";
+    return "Pagar";
   }
 
-  // --- Alternar entre el formulario de tarjeta y el aviso de pago en
-  // efectivo. Esto NO depende de Openpay.js (el pago en efectivo tampoco
-  // lo necesita), así que queda cableado desde el inicio, sin esperar a
-  // que termine de configurarse el SDK de tarjetas más abajo.
+  // Muestra/oculta los bloques del formulario según el método elegido.
+  // Centralizado aquí porque se usa tanto en el cambio de selector como al
+  // revertir una selección que no pasa la validación del límite.
+  function aplicarVistaMetodo(metodo) {
+    camposTarjeta.style.display = metodo === "tarjeta" ? "" : "none";
+    avisoEfectivo.style.display = metodo === "efectivo" ? "" : "none";
+    avisoTransferencia.style.display = metodo === "transferencia" ? "" : "none";
+    candadoTarjeta.style.display = metodo === "tarjeta" ? "" : "none";
+    btnPagar.textContent = textoBotonPago();
+  }
+
+  // --- Alternar entre el formulario de tarjeta y los avisos de efectivo/
+  // transferencia. Esto NO depende de Openpay.js (ninguno de los otros dos
+  // métodos lo necesita), así que queda cableado desde el inicio, sin
+  // esperar a que termine de configurarse el SDK de tarjetas más abajo.
   document.querySelectorAll('input[name="metodoPago"]').forEach((input) => {
     input.addEventListener("change", () => {
-      const esEfectivo = metodoPagoActual() === "efectivo";
+      const metodo = metodoPagoActual();
 
-      if (esEfectivo && totalCarrito() > LIMITE_EFECTIVO_MXN) {
+      if (metodo === "efectivo" && totalCarrito() > LIMITE_EFECTIVO_MXN) {
         mostrarError(
-          `El pago en tienda tiene un límite de ${formatoMoneda(LIMITE_EFECTIVO_MXN)} MXN por pedido (lo define Openpay). Tu pedido es de ${formatoMoneda(totalCarrito())}. Paga con tarjeta o reduce la cantidad de productos.`
+          `El pago en tienda tiene un límite de ${formatoMoneda(LIMITE_EFECTIVO_MXN)} MXN por pedido (lo define Openpay). Tu pedido es de ${formatoMoneda(totalCarrito())}. Paga con tarjeta, transferencia, o reduce la cantidad de productos.`
         );
         document.querySelector('input[name="metodoPago"][value="tarjeta"]').checked = true;
-        camposTarjeta.style.display = "";
-        avisoEfectivo.style.display = "none";
-        candadoTarjeta.style.display = "";
-        btnPagar.textContent = textoBotonPago();
+        aplicarVistaMetodo("tarjeta");
         return;
       }
 
       limpiarError();
-      camposTarjeta.style.display = esEfectivo ? "none" : "";
-      avisoEfectivo.style.display = esEfectivo ? "" : "none";
-      candadoTarjeta.style.display = esEfectivo ? "none" : "";
-      btnPagar.textContent = textoBotonPago();
+      aplicarVistaMetodo(metodo);
     });
   });
 
@@ -96,12 +105,18 @@
     };
   }
 
-  async function pagarEnEfectivo() {
-    // Defensa adicional por si el límite de arriba se brincó de alguna
-    // forma (el servidor también lo valida, pero así se evita la llamada).
-    if (totalCarrito() > LIMITE_EFECTIVO_MXN) {
+  // Pago en efectivo (tienda) y transferencia (SPEI) comparten el mismo
+  // flujo: no se tokeniza nada en el navegador, se le pide a create-charge
+  // los datos para pagar (referencia+código de barras, o CLABE/banco) y se
+  // redirige a gracias.html a mostrarlos (y Openpay también los manda por
+  // correo). Solo cambia el "metodo_pago" que se envía y el mensaje de error
+  // por defecto.
+  async function pagarSinTokenizar(metodoPago) {
+    if (metodoPago === "efectivo" && totalCarrito() > LIMITE_EFECTIVO_MXN) {
+      // Defensa adicional por si el límite de arriba se brincó de alguna
+      // forma (el servidor también lo valida, pero así se evita la llamada).
       mostrarError(
-        `El pago en tienda tiene un límite de ${formatoMoneda(LIMITE_EFECTIVO_MXN)} MXN por pedido. Paga con tarjeta o reduce la cantidad de productos.`
+        `El pago en tienda tiene un límite de ${formatoMoneda(LIMITE_EFECTIVO_MXN)} MXN por pedido. Paga con tarjeta, transferencia, o reduce la cantidad de productos.`
       );
       btnPagar.disabled = false;
       btnPagar.textContent = textoBotonPago();
@@ -110,14 +125,18 @@
 
     const cliente = datosCliente();
     if (!cliente.nombre || !cliente.email || !cliente.telefono) {
-      mostrarError("Completa nombre, correo y teléfono para generar tu referencia de pago.");
+      mostrarError(
+        metodoPago === "transferencia"
+          ? "Completa nombre, correo y teléfono para generar los datos de tu transferencia."
+          : "Completa nombre, correo y teléfono para generar tu referencia de pago."
+      );
       btnPagar.disabled = false;
       btnPagar.textContent = textoBotonPago();
       return;
     }
 
     const pedido = {
-      metodo_pago: "efectivo",
+      metodo_pago: metodoPago,
       items: leerCarrito().map((i) => ({ id: i.id, cantidad: i.cantidad })),
       cliente,
     };
@@ -131,14 +150,20 @@
       const data = await res.json();
 
       if (!res.ok) {
-        mostrarError(data.error || "No se pudo generar la referencia de pago.");
+        mostrarError(
+          data.error ||
+            (metodoPago === "transferencia"
+              ? "No se pudieron generar los datos de la transferencia."
+              : "No se pudo generar la referencia de pago.")
+        );
         btnPagar.disabled = false;
         btnPagar.textContent = textoBotonPago();
         return;
       }
 
-      // El pedido queda "en proceso" hasta que el cliente pague en tienda;
-      // no se vacía el carrito todavía (gracias.html muestra la referencia).
+      // El pedido queda "en proceso" hasta que se registre el pago (en
+      // tienda o por transferencia); no se vacía el carrito todavía
+      // (gracias.html muestra la referencia/datos bancarios).
       localStorage.setItem("ultimo_cargo_id", data.charge_id);
       window.location.href = `/tienda/gracias.html?orden=${encodeURIComponent(data.charge_id)}`;
     } catch (err) {
@@ -173,10 +198,11 @@
     e.preventDefault();
     limpiarError();
 
-    if (metodoPagoActual() === "efectivo") {
+    const metodo = metodoPagoActual();
+    if (metodo === "efectivo" || metodo === "transferencia") {
       btnPagar.disabled = true;
-      btnPagar.textContent = "Generando referencia…";
-      pagarEnEfectivo();
+      btnPagar.textContent = metodo === "transferencia" ? "Generando datos…" : "Generando referencia…";
+      pagarSinTokenizar(metodo);
       return;
     }
 

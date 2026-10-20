@@ -8,7 +8,7 @@
 const fs = require("fs");
 const path = require("path");
 const Openpay = require("openpay");
-const { enviarCorreoReferenciaTienda } = require("../../lib/email-tienda");
+const { enviarCorreoReferenciaTienda, enviarCorreoTransferencia } = require("../../lib/email-tienda");
 
 const productos = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), "data", "productos.json"), "utf8")
@@ -95,8 +95,13 @@ module.exports = async (req, res) => {
 
   try {
     const { token_id, device_session_id, items, cliente } = req.body || {};
-    // "tarjeta" (por defecto, compatibilidad con clientes viejos) o "efectivo".
-    const metodoPago = req.body && req.body.metodo_pago === "efectivo" ? "efectivo" : "tarjeta";
+    // "tarjeta" (por defecto, compatibilidad con clientes viejos), "efectivo"
+    // o "transferencia".
+    const metodoPagoSolicitado = req.body && req.body.metodo_pago;
+    const metodoPago =
+      metodoPagoSolicitado === "efectivo" || metodoPagoSolicitado === "transferencia"
+        ? metodoPagoSolicitado
+        : "tarjeta";
 
     if (!Array.isArray(items) || items.length === 0) {
       res.status(400).json({ error: "Solicitud incompleta." });
@@ -131,7 +136,26 @@ module.exports = async (req, res) => {
     const descripcion = `Pedido ${orderId} (subtotal ${subtotal} + IVA ${iva}) — ${detalle.map((d) => `${d.nombre} x${d.cantidad}`).join(", ")}`;
 
     let chargeRequest;
-    if (metodoPago === "efectivo") {
+    if (metodoPago === "transferencia") {
+      // Transferencia bancaria (SPEI/CIE): el cliente transfiere desde su
+      // banco a la CLABE/convenio que Openpay genera. Igual que "efectivo",
+      // no lleva tarjeta ni device_session_id. A diferencia de "tienda",
+      // Openpay no documenta un monto máximo para este método.
+      // https://www.openpay.mx/en/docs/bank-charge.html
+      chargeRequest = {
+        method: "bank_account",
+        amount: total,
+        currency: detalle[0].moneda || "MXN",
+        description: descripcion,
+        order_id: orderId,
+        customer: {
+          name: nombre,
+          last_name: apellido,
+          email: cliente.email,
+          phone_number: cliente.telefono || undefined,
+        },
+      };
+    } else if (metodoPago === "efectivo") {
       // Cargo "en tienda": el cliente paga en efectivo en 7-Eleven u
       // otra tienda participante de Openpay, usando la referencia/código de
       // barras que Openpay genera. No lleva tarjeta ni device_session_id.
@@ -230,6 +254,38 @@ module.exports = async (req, res) => {
           status: body.status,
           referencia: body.payment_method.reference,
           barcode_url: body.payment_method.barcode_url,
+        });
+        return;
+      }
+
+      if (body.payment_method && body.payment_method.type === "bank_transfer") {
+        // Mismo correo de confirmación que en "tienda", adaptado a los
+        // datos bancarios (CLABE/convenio/referencia en vez de código de
+        // barras). Igual de no bloqueante si falla.
+        try {
+          await enviarCorreoTransferencia({
+            to: cliente.email,
+            banco: body.payment_method.bank,
+            clabe: body.payment_method.clabe,
+            convenio: body.payment_method.agreement,
+            referencia: body.payment_method.name,
+            chargeId: body.id,
+            total,
+            descripcionItems: detalle.map((d) => `${d.nombre} x${d.cantidad}`).join(", "),
+            ordenId: orderId,
+          });
+        } catch (mailErr) {
+          console.error("No se pudo enviar el correo de datos de transferencia:", mailErr);
+        }
+
+        res.status(200).json({
+          requiere_transferencia: true,
+          charge_id: body.id,
+          status: body.status,
+          banco: body.payment_method.bank,
+          clabe: body.payment_method.clabe,
+          convenio: body.payment_method.agreement,
+          referencia: body.payment_method.name,
         });
         return;
       }

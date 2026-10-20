@@ -72,6 +72,10 @@
           <input type="radio" name="metodoPago" value="efectivo">
           🏪 Efectivo (7-Eleven y más)
         </label>
+        <label class="metodo-pago-opcion">
+          <input type="radio" name="metodoPago" value="transferencia">
+          🏦 Transferencia (SPEI)
+        </label>
       </div>
 
       <form id="form-pago" novalidate>
@@ -116,6 +120,10 @@
 
         <div class="aviso-efectivo" data-aviso-efectivo style="display:none">
           🏪 Al continuar generamos una referencia de pago y te la enviaremos también por correo. Llévala a 7-Eleven, Circle K, Farmacias del Ahorro, Farmacias Benavides, Walmart, Walmart Express, Sam’s Club o Bodega Aurrera y paga en efectivo con el código de barras o la referencia.
+        </div>
+
+        <div class="aviso-efectivo" data-aviso-transferencia style="display:none">
+          🏦 Al continuar generamos los datos de tu transferencia (CLABE, banco y referencia) y te los enviaremos también por correo. Tu pedido queda confirmado en cuanto el banco registre el pago (normalmente el mismo día hábil).
         </div>
 
         <button type="submit" class="btn-primario" style="width:100%" data-btn-pagar>

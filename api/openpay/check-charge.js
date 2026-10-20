@@ -35,8 +35,14 @@ module.exports = async (req, res) => {
       payment_method: body.payment_method
         ? {
             type: body.payment_method.type,
+            // "store" (Paynet):
             reference: body.payment_method.reference,
             barcode_url: body.payment_method.barcode_url,
+            // "bank_transfer" (SPEI):
+            bank: body.payment_method.bank,
+            clabe: body.payment_method.clabe,
+            agreement: body.payment_method.agreement,
+            name: body.payment_method.name,
           }
         : null,
     });

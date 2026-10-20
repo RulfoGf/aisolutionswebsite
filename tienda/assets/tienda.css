@@ -496,3 +496,24 @@ html, body {
   border-radius: 6px;
   padding: 0.5rem;
 }
+.dato-transferencia {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--tienda-borde);
+  font-size: 0.95rem;
+}
+.dato-transferencia:last-child {
+  border-bottom: none;
+}
+.dato-transferencia span {
+  color: var(--tienda-texto-sutil, #9ca3af);
+}
+.dato-transferencia strong {
+  font-family: "Courier New", monospace;
+  letter-spacing: 0.03em;
+  text-align: right;
+  word-break: break-all;
+}
