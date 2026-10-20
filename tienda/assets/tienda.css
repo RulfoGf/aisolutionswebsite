@@ -28,12 +28,21 @@ html, body {
   font-family: var(--tienda-fuente);
   color: var(--tienda-texto);
   background-color: var(--tienda-bg);
-  background-image: linear-gradient(180deg, rgba(8,6,18,0.88), rgba(8,6,18,0.94)), url("/tienda/assets/img/fondo-tienda.jpg");
+  background-image: url("/images-event/bg/9.jpg");
   background-size: cover;
   background-position: top center;
   background-repeat: no-repeat;
   min-height: 100vh;
-  padding: 0 0 4rem;
+  padding: 70px 0 4rem;
+}
+
+.tienda-site-header div#logo {
+  height: 70px;
+}
+.tienda-site-header div#logo img.logo {
+  max-height: 42px;
+  width: auto;
+  display: block;
 }
 
 .tienda-header {
