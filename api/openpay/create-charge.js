@@ -166,8 +166,18 @@ module.exports = async (req, res) => {
         // respuesta no es 200/201/204, o un error de red/conexión si la
         // petición ni siquiera llegó a Openpay.
         console.error("Error al crear cargo en Openpay:", JSON.stringify(error));
+        // Requisito de certificación de Openpay: para tarjeta reportada como
+        // robada (3004) o con sospecha de fraude (3005) no se debe mostrar el
+        // motivo real al cliente, solo un mensaje genérico.
+        const MENSAJES_POR_CODIGO = {
+          3004: "Error con tarjeta, comunícate con tu banco",
+          3005: "Error con tarjeta, comunícate con tu banco",
+        };
         const mensaje =
-          error.description || error.message || "No se pudo procesar el pago con Openpay.";
+          MENSAJES_POR_CODIGO[error.error_code] ||
+          error.description ||
+          error.message ||
+          "No se pudo procesar el pago con Openpay.";
         res.status(error.http_code || 402).json({ error: mensaje, error_code: error.error_code });
         return;
       }
