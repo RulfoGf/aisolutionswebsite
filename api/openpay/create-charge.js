@@ -119,7 +119,7 @@ module.exports = async (req, res) => {
 
     let chargeRequest;
     if (metodoPago === "efectivo") {
-      // Cargo "en tienda": el cliente paga en efectivo en OXXO, 7-Eleven u
+      // Cargo "en tienda": el cliente paga en efectivo en 7-Eleven u
       // otra tienda participante de Openpay, usando la referencia/código de
       // barras que Openpay genera. No lleva tarjeta ni device_session_id.
       chargeRequest = {
