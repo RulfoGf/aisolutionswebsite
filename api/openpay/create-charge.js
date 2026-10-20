@@ -8,6 +8,7 @@
 const fs = require("fs");
 const path = require("path");
 const Openpay = require("openpay");
+const { enviarCorreoReferenciaTienda } = require("../../lib/email-tienda");
 
 const productos = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), "data", "productos.json"), "utf8")
@@ -31,6 +32,12 @@ function clienteOpenpay() {
 // monto que venga del navegador. El cálculo debe ser idéntico al de
 // carrito.js para que lo que el cliente ve coincida con lo que se le cobra.
 const IVA_RATE = 0.16;
+
+// Límite que Openpay impone a los cargos "en tienda" (Paynet): no acepta
+// crear una referencia por más de este monto. El checkout también lo valida
+// en el navegador, pero aquí es donde realmente se hace cumplir.
+// https://documents.openpay.mx/docs/charge-store
+const LIMITE_EFECTIVO_MXN = 29999.99;
 
 function desgloseLinea(producto, cantidad) {
   if (producto.ivaIncluido) {
@@ -112,6 +119,12 @@ module.exports = async (req, res) => {
       res.status(400).json({ error: "El total del pedido no es válido." });
       return;
     }
+    if (metodoPago === "efectivo" && total > LIMITE_EFECTIVO_MXN) {
+      res.status(400).json({
+        error: `El pago en tienda tiene un límite de $${LIMITE_EFECTIVO_MXN.toFixed(2)} MXN por pedido. Paga con tarjeta o reduce la cantidad de productos.`,
+      });
+      return;
+    }
 
     const { nombre, apellido } = partirNombre(cliente.nombre);
     const orderId = `orden-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
@@ -159,7 +172,7 @@ module.exports = async (req, res) => {
 
     const openpay = clienteOpenpay();
 
-    openpay.charges.create(chargeRequest, (error, body) => {
+    openpay.charges.create(chargeRequest, async (error, body) => {
       if (error) {
         // El SDK de Openpay entrega aquí el cuerpo de error "plano" de su
         // API (description, error_code, http_code, category) cuando la
@@ -192,6 +205,25 @@ module.exports = async (req, res) => {
       }
 
       if (body.payment_method && body.payment_method.type === "store") {
+        // Correo de confirmación con la referencia/código de barras, para
+        // que el cliente la tenga a la mano aunque cierre la página de
+        // "gracias". Si falla (p.ej. RESEND_API_KEY no configurada todavía
+        // o un problema de red), no debe tumbar el checkout: solo se deja
+        // registrado en los logs y el cliente igual ve la referencia en
+        // pantalla.
+        try {
+          await enviarCorreoReferenciaTienda({
+            to: cliente.email,
+            referencia: body.payment_method.reference,
+            barcodeUrl: body.payment_method.barcode_url,
+            total,
+            descripcionItems: detalle.map((d) => `${d.nombre} x${d.cantidad}`).join(", "),
+            ordenId: orderId,
+          });
+        } catch (mailErr) {
+          console.error("No se pudo enviar el correo de referencia de pago:", mailErr);
+        }
+
         res.status(200).json({
           requiere_efectivo: true,
           charge_id: body.id,

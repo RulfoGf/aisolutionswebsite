@@ -4,6 +4,11 @@
    "store") + llamada a la función serverless que crea el cargo.
    ============================================================ */
 (function () {
+  // Límite que Openpay impone a los cargos "en tienda" (Paynet): no se
+  // pueden crear referencias por más de este monto. Ver:
+  // https://documents.openpay.mx/docs/charge-store
+  const LIMITE_EFECTIVO_MXN = 29999.99;
+
   const items = leerCarrito();
 
   if (items.length === 0) {
@@ -62,6 +67,20 @@
   document.querySelectorAll('input[name="metodoPago"]').forEach((input) => {
     input.addEventListener("change", () => {
       const esEfectivo = metodoPagoActual() === "efectivo";
+
+      if (esEfectivo && totalCarrito() > LIMITE_EFECTIVO_MXN) {
+        mostrarError(
+          `El pago en tienda tiene un límite de ${formatoMoneda(LIMITE_EFECTIVO_MXN)} MXN por pedido (lo define Openpay). Tu pedido es de ${formatoMoneda(totalCarrito())}. Paga con tarjeta o reduce la cantidad de productos.`
+        );
+        document.querySelector('input[name="metodoPago"][value="tarjeta"]').checked = true;
+        camposTarjeta.style.display = "";
+        avisoEfectivo.style.display = "none";
+        candadoTarjeta.style.display = "";
+        btnPagar.textContent = textoBotonPago();
+        return;
+      }
+
+      limpiarError();
       camposTarjeta.style.display = esEfectivo ? "none" : "";
       avisoEfectivo.style.display = esEfectivo ? "" : "none";
       candadoTarjeta.style.display = esEfectivo ? "none" : "";
@@ -78,6 +97,17 @@
   }
 
   async function pagarEnEfectivo() {
+    // Defensa adicional por si el límite de arriba se brincó de alguna
+    // forma (el servidor también lo valida, pero así se evita la llamada).
+    if (totalCarrito() > LIMITE_EFECTIVO_MXN) {
+      mostrarError(
+        `El pago en tienda tiene un límite de ${formatoMoneda(LIMITE_EFECTIVO_MXN)} MXN por pedido. Paga con tarjeta o reduce la cantidad de productos.`
+      );
+      btnPagar.disabled = false;
+      btnPagar.textContent = textoBotonPago();
+      return;
+    }
+
     const cliente = datosCliente();
     if (!cliente.nombre || !cliente.email || !cliente.telefono) {
       mostrarError("Completa nombre, correo y teléfono para generar tu referencia de pago.");
