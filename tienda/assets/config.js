@@ -7,6 +7,6 @@
    ============================================================ */
 window.OPENPAY_CONFIG = {
   MERCHANT_ID: "mg8t5zvoe9e1yc6ldoqm",
-  PUBLIC_KEY: "pk_ac7cb2caf2ed4f6d92d5d0351717adaf",
-  SANDBOX: true, // cambia a false cuando pases a producción
+  PUBLIC_KEY: "pk_effab24ef1b344f2a34ad48e642f961c",
+  SANDBOX: false, // producción desde 21/oct/2026
 };
