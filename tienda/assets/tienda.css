@@ -201,7 +201,7 @@ html, body {
 .grid-bancos .chip-banco {
   background: #ffffff;
   border-radius: 8px;
-  padding: 0.5rem 0.85rem;
+  padding: 0.25rem 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -209,7 +209,7 @@ html, body {
 }
 .grid-bancos .chip-banco img {
   height: 100%;
-  max-width: 90px;
+  max-width: 108px;
   width: auto;
   object-fit: contain;
 }
