@@ -25,5 +25,14 @@
     "moneda": "MXN",
     "ivaIncluido": true,
     "imagen": "/tienda/assets/img/producto-3.png"
+  },
+  {
+    "id": "prod-test-prod",
+    "nombre": "PRUEBA PRODUCCION — NO VISIBLE EN CATALOGO",
+    "descripcion": "Producto temporal para probar tarjeta, efectivo y SPEI en produccion. No esta enlazado en ninguna pagina del sitio. Borrar despues de probar.",
+    "precio": 30.00,
+    "moneda": "MXN",
+    "ivaIncluido": true,
+    "imagen": "/tienda/assets/img/producto-3.png"
   }
 ]
