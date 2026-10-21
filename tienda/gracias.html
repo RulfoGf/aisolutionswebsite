@@ -115,12 +115,13 @@
         cont.innerHTML = `
           <div class="icono">🏪</div>
           <h1>Falta pagar en tienda</h1>
-          <p>Te enviamos esta referencia también por correo. Llévala a 7-Eleven, Circle K, Extra, Farmacias del Ahorro, Farmacias Benavides, Walmart, Walmart Express, Sam’s Club, Bodega Aurrera, Kiosko, Waldo’s o SYS Tienda y paga en efectivo. En cuanto se registre el pago te avisaremos por correo.</p>
+          <p>Te enviamos esta referencia también por correo. Paga en efectivo en 7-Eleven, Walmart, Walmart Express, Bodega Aurrera, Sam's Club, Soriana, Circle K, Farmacias del Ahorro, Farmacias Guadalajara, Waldo's, Extra, Kiosko, Más Bodega, MercaDía, SYS Tienda, Pagaqui, Eleczion o City Club. En cuanto se registre el pago te avisaremos por correo.</p>
           <div class="pago-efectivo-detalle">
             <div>Referencia de pago</div>
             <div class="referencia">${ref}</div>
             ${barcodeUrl ? `<img class="barcode" src="${barcodeUrl}" alt="Código de barras de pago">` : ""}
-          </div>`;
+          </div>
+          <a class="btn-primario" href="https://www.paynet.com.mx/" target="_blank" rel="noopener" style="display:inline-block;margin-top:1rem;text-decoration:none">📍 Encuentra tu tienda más cercana</a>`;
       } else if (res.ok && data.status === "in_progress" && esTransferencia) {
         const pm = data.payment_method;
         const filaDato = (etiqueta, valor) =>
