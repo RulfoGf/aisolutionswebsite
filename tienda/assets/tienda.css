@@ -497,8 +497,9 @@ html, body {
   padding: 0.5rem;
 }
 .pago-efectivo-detalle .btn-recibo-pdf {
-  display: inline-block;
-  margin-top: 1rem;
+  display: block;
+  width: fit-content;
+  margin: 1rem auto 0;
   background: var(--tienda-acento);
   color: #fff;
   font-weight: 600;
