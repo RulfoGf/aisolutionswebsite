@@ -3,11 +3,48 @@
    pago (tarjeta vía Openpay.js, o efectivo en tienda vía Openpay
    "store") + llamada a la función serverless que crea el cargo.
    ============================================================ */
-(function () {
+(async function () {
   // Límite que Openpay impone a los cargos "en tienda" (Paynet): no se
   // pueden crear referencias por más de este monto. Ver:
   // https://documents.openpay.mx/docs/charge-store
   const LIMITE_EFECTIVO_MXN = 29999.99;
+
+  // --- Link "comprar ahora" (?producto=id) --------------------------
+  // Usado por los botones del carrusel de respond.io: cada botón manda
+  // directo a checkout.html?producto=<id>, y aquí reemplazamos el
+  // carrito por ese único producto (cantidad 1) antes de renderizar el
+  // resumen. Si el id no existe en productos.json, o no viene el
+  // parámetro, no se toca el carrito (se usa el que ya hubiera en
+  // localStorage, igual que antes).
+  async function precargarProductoDesdeURL() {
+    const params = new URLSearchParams(window.location.search);
+    const productoId = params.get("producto");
+    if (!productoId) return;
+
+    try {
+      const res = await fetch("/data/productos.json");
+      const productos = await res.json();
+      const producto = productos.find((p) => p.id === productoId);
+      if (!producto) {
+        console.warn(`Link de compra directa: no existe el producto "${productoId}".`);
+        return;
+      }
+      guardarCarrito([
+        {
+          id: producto.id,
+          nombre: producto.nombre,
+          precio: producto.precio,
+          ivaIncluido: producto.ivaIncluido === true,
+          imagen: producto.imagen,
+          cantidad: 1,
+        },
+      ]);
+    } catch (e) {
+      console.warn("No se pudo precargar el producto desde el link de compra directa:", e);
+    }
+  }
+
+  await precargarProductoDesdeURL();
 
   const items = leerCarrito();
 
