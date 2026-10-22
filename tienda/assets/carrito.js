@@ -32,6 +32,7 @@ function agregarAlCarrito(producto, cantidad = 1) {
       precio: producto.precio,
       ivaIncluido: producto.ivaIncluido === true,
       imagen: producto.imagen,
+      descripcion: producto.descripcion,
       cantidad,
     });
   }

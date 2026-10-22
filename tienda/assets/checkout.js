@@ -36,6 +36,7 @@
           precio: producto.precio,
           ivaIncluido: producto.ivaIncluido === true,
           imagen: producto.imagen,
+          descripcion: producto.descripcion,
           cantidad: 1,
         },
       ]);
@@ -54,16 +55,30 @@
   }
 
   // --- Resumen del pedido ---
+  // Muestra solo la parte de ficha técnica de la descripción (a partir de
+  // "Procesador Intel"), para no repetir el nombre del equipo que ya se ve
+  // arriba. Si la descripción no trae esa frase (ej. el producto demo), no
+  // se agrega ninguna línea extra.
+  function especificacionesCorta(descripcion) {
+    if (!descripcion) return "";
+    const idx = descripcion.indexOf("Procesador Intel");
+    return idx === -1 ? "" : descripcion.slice(idx);
+  }
+
   const contItems = document.querySelector("[data-resumen-items]");
   contItems.innerHTML = items
-    .map(
-      (i) => `
+    .map((i) => {
+      const especificaciones = especificacionesCorta(i.descripcion);
+      return `
     <div class="resumen-item">
       <img src="${i.imagen}" alt="${i.nombre}" onerror="this.style.visibility='hidden'">
-      <span class="resumen-item-nombre">${i.nombre} × ${i.cantidad}</span>
+      <div class="resumen-item-detalle">
+        <span class="resumen-item-nombre">${i.nombre} × ${i.cantidad}</span>
+        ${especificaciones ? `<span class="resumen-item-desc">${especificaciones}</span>` : ""}
+      </div>
       <span class="resumen-item-precio">${formatoMoneda(i.precio * i.cantidad)}</span>
-    </div>`
-    )
+    </div>`;
+    })
     .join("");
   document.querySelector("[data-resumen-subtotal]").textContent = formatoMoneda(subtotalCarrito());
   document.querySelector("[data-resumen-iva]").textContent = formatoMoneda(ivaCarrito());

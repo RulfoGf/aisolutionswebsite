@@ -383,10 +383,10 @@ html, body {
 
 .resumen-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.65rem;
   font-size: 0.9rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
   color: var(--tienda-texto-suave);
 }
 .resumen-item img {
@@ -397,8 +397,21 @@ html, body {
   flex-shrink: 0;
   background: var(--tienda-bg-alt);
 }
-.resumen-item .resumen-item-nombre { flex: 1; }
-.resumen-item .resumen-item-precio { white-space: nowrap; }
+.resumen-item-detalle {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.resumen-item-nombre { color: var(--tienda-texto); }
+.resumen-item-desc {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--tienda-texto-suave);
+  opacity: 0.85;
+}
+.resumen-item-precio { white-space: nowrap; }
 .resumen-total { display: flex; justify-content: space-between; font-weight: 400; color: var(--tienda-texto-suave); font-size: 0.9rem; margin-top: 0.4rem; }
 .resumen-total.total-final { font-weight: 700; font-size: 1.1rem; color: var(--tienda-texto); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--tienda-borde); }
 
