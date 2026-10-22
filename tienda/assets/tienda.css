@@ -496,6 +496,43 @@ html, body {
   border-radius: 6px;
   padding: 0.5rem;
 }
+.pago-efectivo-detalle .btn-recibo-pdf {
+  display: inline-block;
+  margin-top: 1rem;
+  background: var(--tienda-acento);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.65rem 1.1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+.pago-efectivo-detalle .btn-recibo-pdf:hover {
+  background: var(--tienda-acento-hover);
+}
+
+/* Instrucciones de pago (gracias.html, pago en tienda/SPEI) */
+.instrucciones-pago {
+  text-align: left;
+  background: var(--tienda-bg-alt);
+  border: 1px solid var(--tienda-borde);
+  border-radius: var(--tienda-radio);
+  padding: 1.25rem 1.25rem 1.25rem 2.5rem;
+  margin: 1.5rem auto 0;
+  max-width: 560px;
+  color: var(--tienda-texto-suave);
+  font-size: 0.92rem;
+}
+.instrucciones-pago li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+.instrucciones-pago li:last-child {
+  margin-bottom: 0;
+}
+.instrucciones-pago a {
+  color: var(--tienda-acento);
+}
 .dato-transferencia {
   display: flex;
   justify-content: space-between;

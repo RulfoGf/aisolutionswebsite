@@ -6,6 +6,19 @@
    ============================================================ */
 const Openpay = require("openpay");
 
+// Mismo patrón de URL que usan los correos de confirmación (ver
+// lib/email-tienda.js) para el PDF oficial del recibo de Openpay.
+function urlReciboOficial(tipo, identificador) {
+  const merchantId = process.env.OPENPAY_MERCHANT_ID;
+  if (!merchantId || !identificador) return null;
+  const dashboard =
+    process.env.OPENPAY_PRODUCTION === "true"
+      ? "https://dashboard.openpay.mx"
+      : "https://sandbox-dashboard.openpay.mx";
+  const ruta = tipo === "bank" ? "spei-pdf" : "paynet-pdf";
+  return `${dashboard}/${ruta}/${encodeURIComponent(merchantId)}/${encodeURIComponent(identificador)}`;
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "GET") {
     res.status(405).json({ error: "Método no permitido" });
@@ -29,6 +42,14 @@ module.exports = async (req, res) => {
       res.status(error.http_code || 404).json({ error: "No se encontró el cargo." });
       return;
     }
+    const reciboPdfUrl = body.payment_method
+      ? body.payment_method.type === "store"
+        ? urlReciboOficial("store", body.payment_method.reference)
+        : body.payment_method.type === "bank_transfer"
+        ? urlReciboOficial("bank", body.id)
+        : null
+      : null;
+
     res.status(200).json({
       id: body.id,
       status: body.status,
@@ -45,6 +66,7 @@ module.exports = async (req, res) => {
             name: body.payment_method.name,
           }
         : null,
+      recibo_pdf_url: reciboPdfUrl,
     });
   });
 };

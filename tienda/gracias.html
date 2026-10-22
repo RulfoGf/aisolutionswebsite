@@ -113,18 +113,32 @@
       } else if (res.ok && data.status === "in_progress" && esEfectivo) {
         const ref = data.payment_method.reference || "";
         const barcodeUrl = data.payment_method.barcode_url || "";
+        const reciboUrl = data.recibo_pdf_url || "";
         cont.innerHTML = `
           <div class="icono">🏪</div>
           <h1>Falta pagar en tienda</h1>
-          <p>Te enviamos esta referencia también por correo. Paga en efectivo en 7-Eleven, Walmart, Walmart Express, Bodega Aurrera, Sam's Club, Soriana, Circle K, Farmacias del Ahorro, Farmacias Guadalajara, Waldo's, Extra, Kiosko, Más Bodega, MercaDía, SYS Tienda, Pagaqui, Eleczion o City Club. En cuanto se registre el pago te avisaremos por correo.</p>
+          <ol class="instrucciones-pago">
+            <li>Acude a cualquier tienda aliada dentro de la fecha límite de pago. ¿Quieres saber dónde pagar? Ingresa a <a href="https://www.paynet.com.mx/" target="_blank" rel="noopener">paynet.com.mx</a>.</li>
+            <li>Dile a la persona de caja que realizarás un pago en efectivo Paynet, proporciona el código o número de referencia.
+              <ul style="margin-top:0.4rem">
+                <li>Si no reconoce el código de barras en pantalla, abre el recibo oficial en PDF (botón abajo) y muéstraselo desde ahí — es más nítido y sí lo reconoce el lector.</li>
+              </ul>
+            </li>
+            <li>Antes de pagar verifica que los datos coincidan con los de este recibo de pago.</li>
+            <li>Realiza el pago en efectivo por el total a pagar, este se reflejará al instante.</li>
+            <li>Conserva tu comprobante de pago para cualquier aclaración.</li>
+          </ol>
           <div class="pago-efectivo-detalle">
             <div>Referencia de pago</div>
             <div class="referencia">${ref}</div>
             ${barcodeUrl ? `<img class="barcode" src="${barcodeUrl}" alt="Código de barras de pago">` : ""}
+            ${reciboUrl ? `<a class="btn-recibo-pdf" href="${reciboUrl}" target="_blank" rel="noopener">📄 Descargar recibo oficial (PDF)</a>` : ""}
           </div>
+          <p style="margin-top:1rem;font-size:0.85rem;color:var(--tienda-texto-suave)">Tiendas participantes: 7-Eleven, Walmart, Walmart Express, Bodega Aurrera, Sam's Club, Soriana, Circle K, Farmacias del Ahorro, Farmacias Guadalajara, Waldo's, Extra, Kiosko, Más Bodega, MercaDía, SYS Tienda, Pagaqui, Eleczion o City Club. En cuanto se registre el pago te avisaremos por correo.</p>
           <a class="btn-primario" href="https://www.paynet.com.mx/" target="_blank" rel="noopener" style="display:inline-block;margin-top:1rem;text-decoration:none">📍 Encuentra tu tienda más cercana</a>`;
       } else if (res.ok && data.status === "in_progress" && esTransferencia) {
         const pm = data.payment_method;
+        const reciboUrl = data.recibo_pdf_url || "";
         const filaDato = (etiqueta, valor) =>
           valor ? `<div class="dato-transferencia"><span>${etiqueta}</span><strong>${valor}</strong></div>` : "";
         cont.innerHTML = `
@@ -136,6 +150,7 @@
             ${filaDato("CLABE", pm.clabe)}
             ${filaDato("Convenio (BBVA)", pm.agreement)}
             ${filaDato("Referencia / concepto", pm.name)}
+            ${reciboUrl ? `<a class="btn-recibo-pdf" href="${reciboUrl}" target="_blank" rel="noopener">📄 Descargar recibo oficial (PDF)</a>` : ""}
           </div>`;
       } else if (res.ok && data.status === "in_progress") {
         cont.innerHTML = `
