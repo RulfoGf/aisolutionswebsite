@@ -49,17 +49,24 @@ module.exports = async (req, res) => {
 
   console.log("Webhook de Openpay recibido:", evento.type, chargeId);
 
+  // IMPORTANTE: en Vercel (serverless) la función puede congelarse justo
+  // después de responder, así que hay que esperar (await) todo el trabajo
+  // asíncrono --- consultar el cargo y mandar el correo --- ANTES de
+  // responder 200. Si se responde primero y se sigue trabajando "en
+  // segundo plano" como antes, ese trabajo puede nunca completarse.
   if (chargeId) {
-    const openpay = new Openpay();
-    openpay.setMerchantId(process.env.OPENPAY_MERCHANT_ID);
-    openpay.setPrivateKey(process.env.OPENPAY_PRIVATE_KEY);
-    openpay.setProductionReady(process.env.OPENPAY_PRODUCTION === "true");
+    try {
+      const openpay = new Openpay();
+      openpay.setMerchantId(process.env.OPENPAY_MERCHANT_ID);
+      openpay.setPrivateKey(process.env.OPENPAY_PRIVATE_KEY);
+      openpay.setProductionReady(process.env.OPENPAY_PRODUCTION === "true");
 
-    openpay.charges.get(chargeId, (error, body) => {
-      if (error) {
-        console.error("No se pudo confirmar el cargo del webhook:", error);
-        return;
-      }
+      const body = await new Promise((resolve, reject) => {
+        openpay.charges.get(chargeId, (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        });
+      });
 
       console.log(`Cargo ${body.id} confirmado con estado: ${body.status}`);
 
@@ -70,22 +77,27 @@ module.exports = async (req, res) => {
           ? "Efectivo (Paynet)"
           : "Tarjeta";
 
-      enviarCorreoNotificacionAdmin({
-        orderId: body.order_id,
-        metodoPago: `${metodoPago} · webhook ${evento.type || ""}`.trim(),
-        estado: body.status,
-        total: body.amount,
-        descripcionItems: body.description,
-        clienteNombre: body.customer && `${body.customer.name || ""} ${body.customer.last_name || ""}`.trim(),
-        clienteEmail: body.customer && body.customer.email,
-        clienteTelefono: body.customer && body.customer.phone_number,
-        chargeId: body.id,
-      }).catch((notifErr) => {
+      try {
+        await enviarCorreoNotificacionAdmin({
+          orderId: body.order_id,
+          metodoPago: `${metodoPago} · webhook ${evento.type || ""}`.trim(),
+          estado: body.status,
+          total: body.amount,
+          descripcionItems: body.description,
+          clienteNombre: body.customer && `${body.customer.name || ""} ${body.customer.last_name || ""}`.trim(),
+          clienteEmail: body.customer && body.customer.email,
+          clienteTelefono: body.customer && body.customer.phone_number,
+          chargeId: body.id,
+        });
+      } catch (notifErr) {
         console.error("No se pudo enviar la notificación interna de admin (webhook):", notifErr);
-      });
-    });
+      }
+    } catch (error) {
+      console.error("No se pudo confirmar el cargo del webhook:", error);
+    }
   }
 
-  // Responder rápido con 200 para que Openpay no reintente.
+  // Responder 200 para que Openpay no reintente, ya con todo el trabajo
+  // anterior completado (no antes).
   res.status(200).json({ recibido: true });
 };
