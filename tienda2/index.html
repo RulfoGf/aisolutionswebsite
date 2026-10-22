@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Tienda Demo — AI Solutions4You</title>
+<link rel="stylesheet" href="/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="/css/jpreloader.css" type="text/css">
+<link rel="stylesheet" href="/css/animate.css" type="text/css">
+<link rel="stylesheet" href="/css/plugin.css" type="text/css">
+<link rel="stylesheet" href="/css/owl.carousel.css" type="text/css">
+<link rel="stylesheet" href="/css/owl.theme.css" type="text/css">
+<link rel="stylesheet" href="/css/owl.transitions.css" type="text/css">
+<link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+<link rel="stylesheet" href="/css/jquery.countdown.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+<link rel="stylesheet" href="/css/twentytwenty.css" type="text/css">
+<link rel="stylesheet" href="/css/bg.css" type="text/css">
+<link rel="stylesheet" href="/css/colors/magenta.css" type="text/css" id="colors">
+<link rel="stylesheet" href="/css/color.css" type="text/css">
+<link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css" type="text/css">
+<link rel="stylesheet" href="/fonts/elegant_font/HTML_CSS/style.css" type="text/css">
+<link rel="stylesheet" href="/fonts/et-line-font/style.css" type="text/css">
+<link rel="stylesheet" href="/css/font-style.css" type="text/css">
+<link rel="stylesheet" href="/tienda/assets/tienda.css">
+<link rel="icon" href="/logo4.ico" type="image/x-icon">
+<style>
+  .aviso-demo{max-width:900px;margin:18px auto 0;padding:12px 18px;border-radius:8px;background:rgba(79,124,255,0.12);border:1px solid rgba(79,124,255,0.35);color:#dfe4ee;font:14px Arial,Helvetica,sans-serif;text-align:center}
+</style>
+</head>
+<body>
+<div class="tienda-wrap">
+  <header class="tienda-site-header smaller">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="logo">
+            <a href="https://www.ai-solutions4you.info/">
+              <img class="logo" src="/images-event/logo.png" alt="AI Solutions4You">
+            </a>
+          </div>
+          <span id="menu-btn"></span>
+          <nav>
+            <ul id="mainmenu" class="ms-2">
+              <li><a href="https://www.ai-solutions4you.info/#section-hero">Home<span></span></a></li>
+              <li><a href="https://www.ai-solutions4you.info/#section-about">Nuestra Estrategia<span></span></a></li>
+              <li><a href="https://www.ai-solutions4you.info/#section-sponsors">Testimonios<span></span></a></li>
+              <li><a href="https://www.ai-solutions4you.info/#section-schedule">Nuestra Metodología<span></span></a></li>
+              <li><a href="https://www.ai-solutions4you.info/#section-register">Contacto<span></span></a></li>
+              <li><a href="/tienda/">Equipo de Cómputo<span></span></a></li>
+
+              <div class="social-icons">
+                <a href="#" class="btn-carrito" onclick="abrirCarrito()">
+                  🛒 Carrito
+                  <span class="contador" data-contador-carrito style="display:none">0</span>
+                </a>
+              </div>
+
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <p class="aviso-demo">Página de demostración interna — no enlazada en el sitio público. Úsala para mostrar el flujo de pago (tarjeta, efectivo o transferencia SPEI) con un cargo real de monto simbólico.</p>
+
+  <main class="tienda-grid" data-grid-productos>
+    <!-- Las tarjetas de producto se insertan aquí vía JS -->
+  </main>
+
+  <footer class="tienda-footer-confianza">
+    <div class="confianza-item">
+      <img class="logo-openpay" src="/tienda/assets/img/pagos/openpay-logo-blanco.png" alt="Openpay by BBVA">
+      <p>🔒 Pagos procesados de forma segura por Openpay. Tus datos de tarjeta se envían directo a Openpay; este sitio nunca los almacena. Conexión protegida con certificado SSL/TLS.</p>
+    </div>
+    <div class="marcas-tarjetas">
+      <img src="/tienda/assets/img/pagos/visa.png" alt="Visa">
+      <img src="/tienda/assets/img/pagos/mastercard.png" alt="Mastercard">
+      <img src="/tienda/assets/img/pagos/american-express.png" alt="American Express">
+      <img src="/tienda/assets/img/pagos/carnet.png" alt="Carnet">
+      <img class="sello-efectivo" src="/tienda/assets/img/pagos/sello-pago-efectivo.png" alt="Compras en línea, pagas en efectivo">
+    </div>
+  </footer>
+
+  <nav class="tienda-footer-links">
+    <a href="https://www.ai-solutions4you.info/#section-register" target="_blank" rel="noopener">Contacto</a>
+    <span aria-hidden="true">·</span>
+    <a href="https://www.ai-solutions4you.info/politicadeprivacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a>
+    <span aria-hidden="true">·</span>
+    <a href="https://www.ai-solutions4you.info/terminos.html" target="_blank" rel="noopener">Términos y condiciones de compra</a>
+  </nav>
+</div>
+
+<!-- Botón flotante de WhatsApp (mismo número que en ai-solutions4you.info) -->
+<a class="boton-whatsapp" href="https://wa.me/5215585816187" target="_blank" rel="noopener" aria-label="Chatea con nosotros por WhatsApp">
+  <img src="/tienda/assets/img/whatsapp-icon.svg" alt="" width="28" height="28">
+</a>
+
+<!-- Panel lateral del carrito -->
+<div class="carrito-overlay" onclick="cerrarCarrito()"></div>
+<aside class="carrito-panel">
+  <div class="encabezado">
+    <strong>Tu carrito</strong>
+    <button class="btn-secundario" onclick="cerrarCarrito()">Cerrar</button>
+  </div>
+  <div class="carrito-items" data-items-carrito></div>
+  <div class="carrito-footer">
+    <div class="subtotal">
+      <span>Subtotal</span>
+      <span data-subtotal-carrito>$0.00</span>
+    </div>
+    <div class="subtotal">
+      <span>IVA (16%)</span>
+      <span data-iva-carrito>$0.00</span>
+    </div>
+    <div class="subtotal total-final">
+      <span>Total</span>
+      <span data-total-carrito>$0.00</span>
+    </div>
+    <button class="btn-primario" style="width:100%" data-ir-checkout onclick="location.href='/tienda/checkout.html'">
+      Proceder al pago
+    </button>
+  </div>
+</aside>
+
+<script src="/tienda/assets/carrito.js"></script>
+<script>
+  async function cargarProductos() {
+    const res = await fetch("/data/productos.json");
+    const productos = (await res.json()).filter((p) => p.demo);
+    const grid = document.querySelector("[data-grid-productos]");
+
+    grid.innerHTML = productos
+      .map(
+        (p) => `
+      <div class="tarjeta-producto">
+        <img src="${p.imagen}" alt="${p.nombre}" onerror="this.style.background='#1d232d'">
+        <div class="info">
+          <h3>${p.nombre}</h3>
+          <p>${p.descripcion}</p>
+          <div class="precio">${p.precio.toLocaleString("es-MX", { style: "currency", currency: p.moneda || "MXN" })} <span class="precio-nota">${p.ivaIncluido ? "IVA incluido" : "+ IVA"}</span></div>
+          <button class="btn-primario" onclick='agregarAlCarrito(${JSON.stringify(p)})'>Agregar al carrito</button>
+        </div>
+      </div>`
+      )
+      .join("");
+  }
+
+  cargarProductos();
+</script>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jpreLoader.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.isotope.min.js"></script>
+<script src="/js/easing.js"></script>
+<script src="/js/jquery.flexslider-min.js"></script>
+<script src="/js/jquery.scrollto.js"></script>
+<script src="/js/owl.carousel.js"></script>
+<script src="/js/jquery.countTo.js"></script>
+<script src="/js/classie.js"></script>
+<script src="/js/video.resize.js"></script>
+<script src="/js/validation.js"></script>
+<script src="/js/wow.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/jquery.stellar.min.js"></script>
+<script src="/js/enquire.min.js"></script>
+<script src="/js/designesia.js"></script>
+<script src="/js/jquery.event.move.js"></script>
+<script src="/js/jquery.plugin.js"></script>
+<script src="/js/jquery.countdown.js"></script>
+<script src="/js/countdown-custom.js"></script>
+<script src="/js/particles.js"></script>
+<script src="/js/particles-settings.js"></script>
+<script src="/js/jquery.twentytwenty.js"></script>
+</body>
+</html>

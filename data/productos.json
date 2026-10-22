@@ -12,7 +12,7 @@
     "id": "prod-2",
     "nombre": "Notebook ThinkBook 14",
     "descripcion": "ThinkBook 14 G7 IML, 14\". Procesador Intel Core Ultra 7 155H, 16GB de RAM SODIMM DDR5-5600, almacenamiento 512GB SSD M.2 2242. Incluye de 1 a 3 años de garantía Premier Support.",
-    "precio": 22038.00,
+    "precio": 22038.0,
     "moneda": "MXN",
     "ivaIncluido": true,
     "imagen": "/tienda/assets/img/producto-2.png"
@@ -28,11 +28,12 @@
   },
   {
     "id": "prod-test-prod",
-    "nombre": "PRUEBA PRODUCCION — NO VISIBLE EN CATALOGO",
-    "descripcion": "Producto temporal para probar tarjeta, efectivo y SPEI en produccion. No esta enlazado en ninguna pagina del sitio. Borrar despues de probar.",
-    "precio": 30.00,
+    "nombre": "Producto Demo — Pago de prueba",
+    "descripcion": "Producto de demostración para mostrar el proceso de pago (tarjeta, efectivo en tienda o transferencia SPEI). Monto simbólico, no es un producto real.",
+    "precio": 30.0,
     "moneda": "MXN",
     "ivaIncluido": true,
-    "imagen": "/tienda/assets/img/producto-3.png"
+    "imagen": "/tienda/assets/img/producto-3.png",
+    "demo": true
   }
 ]
