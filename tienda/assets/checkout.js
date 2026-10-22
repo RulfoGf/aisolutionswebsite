@@ -59,8 +59,9 @@
     .map(
       (i) => `
     <div class="resumen-item">
-      <span>${i.nombre} × ${i.cantidad}</span>
-      <span>${formatoMoneda(i.precio * i.cantidad)}</span>
+      <img src="${i.imagen}" alt="${i.nombre}" onerror="this.style.visibility='hidden'">
+      <span class="resumen-item-nombre">${i.nombre} × ${i.cantidad}</span>
+      <span class="resumen-item-precio">${formatoMoneda(i.precio * i.cantidad)}</span>
     </div>`
     )
     .join("");

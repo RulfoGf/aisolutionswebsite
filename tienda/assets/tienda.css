@@ -381,7 +381,24 @@ html, body {
 .campo input:focus { outline: 2px solid var(--tienda-acento); }
 .campo-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
-.resumen-item { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--tienda-texto-suave); }
+.resumen-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+  color: var(--tienda-texto-suave);
+}
+.resumen-item img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: var(--tienda-bg-alt);
+}
+.resumen-item .resumen-item-nombre { flex: 1; }
+.resumen-item .resumen-item-precio { white-space: nowrap; }
 .resumen-total { display: flex; justify-content: space-between; font-weight: 400; color: var(--tienda-texto-suave); font-size: 0.9rem; margin-top: 0.4rem; }
 .resumen-total.total-final { font-weight: 700; font-size: 1.1rem; color: var(--tienda-texto); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--tienda-borde); }
 
