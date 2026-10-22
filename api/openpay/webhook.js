@@ -18,6 +18,7 @@
    este es el lugar para conectarlo (ver README).
    ============================================================ */
 const Openpay = require("openpay");
+const { enviarCorreoNotificacionAdmin } = require("../../lib/email-tienda");
 
 function autenticacionValida(req) {
   const usuario = process.env.OPENPAY_WEBHOOK_USER;
@@ -57,11 +58,31 @@ module.exports = async (req, res) => {
     openpay.charges.get(chargeId, (error, body) => {
       if (error) {
         console.error("No se pudo confirmar el cargo del webhook:", error);
-      } else {
-        console.log(`Cargo ${body.id} confirmado con estado: ${body.status}`);
-        // TODO: aquí puedes, por ejemplo, guardar el pedido en una
-        // base de datos, actualizar inventario o enviar un correo.
+        return;
       }
+
+      console.log(`Cargo ${body.id} confirmado con estado: ${body.status}`);
+
+      const metodoPago =
+        body.method === "bank_account"
+          ? "Transferencia (SPEI)"
+          : body.method === "store"
+          ? "Efectivo (Paynet)"
+          : "Tarjeta";
+
+      enviarCorreoNotificacionAdmin({
+        orderId: body.order_id,
+        metodoPago: `${metodoPago} · webhook ${evento.type || ""}`.trim(),
+        estado: body.status,
+        total: body.amount,
+        descripcionItems: body.description,
+        clienteNombre: body.customer && `${body.customer.name || ""} ${body.customer.last_name || ""}`.trim(),
+        clienteEmail: body.customer && body.customer.email,
+        clienteTelefono: body.customer && body.customer.phone_number,
+        chargeId: body.id,
+      }).catch((notifErr) => {
+        console.error("No se pudo enviar la notificación interna de admin (webhook):", notifErr);
+      });
     });
   }
 

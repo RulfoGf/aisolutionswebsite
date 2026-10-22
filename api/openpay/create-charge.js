@@ -8,7 +8,7 @@
 const fs = require("fs");
 const path = require("path");
 const Openpay = require("openpay");
-const { enviarCorreoReferenciaTienda, enviarCorreoTransferencia } = require("../../lib/email-tienda");
+const { enviarCorreoReferenciaTienda, enviarCorreoTransferencia, enviarCorreoNotificacionAdmin } = require("../../lib/email-tienda");
 
 const productos = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), "data", "productos.json"), "utf8")
@@ -220,6 +220,20 @@ module.exports = async (req, res) => {
       }
 
       if (body.payment_method && body.payment_method.type === "redirect") {
+        enviarCorreoNotificacionAdmin({
+          orderId,
+          metodoPago: "Tarjeta",
+          estado: "Requiere 3D Secure",
+          total,
+          descripcionItems: detalle.map((d) => `${d.nombre} x${d.cantidad}`).join(", "),
+          clienteNombre: cliente.nombre,
+          clienteEmail: cliente.email,
+          clienteTelefono: cliente.telefono,
+          chargeId: body.id,
+        }).catch((notifErr) => {
+          console.error("No se pudo enviar la notificación interna de admin:", notifErr);
+        });
+
         res.status(200).json({
           requiere_3ds: true,
           redirect_url: body.payment_method.url,
@@ -247,6 +261,20 @@ module.exports = async (req, res) => {
         } catch (mailErr) {
           console.error("No se pudo enviar el correo de referencia de pago:", mailErr);
         }
+
+        enviarCorreoNotificacionAdmin({
+          orderId,
+          metodoPago: "Efectivo (Paynet)",
+          estado: body.status,
+          total,
+          descripcionItems: detalle.map((d) => `${d.nombre} x${d.cantidad}`).join(", "),
+          clienteNombre: cliente.nombre,
+          clienteEmail: cliente.email,
+          clienteTelefono: cliente.telefono,
+          chargeId: body.id,
+        }).catch((notifErr) => {
+          console.error("No se pudo enviar la notificación interna de admin:", notifErr);
+        });
 
         res.status(200).json({
           requiere_efectivo: true,
@@ -278,6 +306,20 @@ module.exports = async (req, res) => {
           console.error("No se pudo enviar el correo de datos de transferencia:", mailErr);
         }
 
+        enviarCorreoNotificacionAdmin({
+          orderId,
+          metodoPago: "Transferencia (SPEI)",
+          estado: body.status,
+          total,
+          descripcionItems: detalle.map((d) => `${d.nombre} x${d.cantidad}`).join(", "),
+          clienteNombre: cliente.nombre,
+          clienteEmail: cliente.email,
+          clienteTelefono: cliente.telefono,
+          chargeId: body.id,
+        }).catch((notifErr) => {
+          console.error("No se pudo enviar la notificación interna de admin:", notifErr);
+        });
+
         res.status(200).json({
           requiere_transferencia: true,
           charge_id: body.id,
@@ -289,6 +331,20 @@ module.exports = async (req, res) => {
         });
         return;
       }
+
+      enviarCorreoNotificacionAdmin({
+        orderId,
+        metodoPago: "Tarjeta",
+        estado: body.status,
+        total,
+        descripcionItems: detalle.map((d) => `${d.nombre} x${d.cantidad}`).join(", "),
+        clienteNombre: cliente.nombre,
+        clienteEmail: cliente.email,
+        clienteTelefono: cliente.telefono,
+        chargeId: body.id,
+      }).catch((notifErr) => {
+        console.error("No se pudo enviar la notificación interna de admin:", notifErr);
+      });
 
       res.status(200).json({
         requiere_3ds: false,
